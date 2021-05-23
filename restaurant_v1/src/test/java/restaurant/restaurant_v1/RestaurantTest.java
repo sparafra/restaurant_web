@@ -2,7 +2,9 @@ package restaurant.restaurant_v1;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.*;  
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -14,8 +16,7 @@ import service.RestaurantService;
 /**
  * Unit test for simple App.
  */
-@TestMethodOrder(OrderAnnotation.class)
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RestaurantTest 
 {
     /**
@@ -27,7 +28,15 @@ public class RestaurantTest
 	Restaurant restaurant;
 	RestaurantService restaurant_service;
 	
+	static HashSet<Restaurant> setAdded;
     
+	@BeforeAll
+	public static void init() throws Exception
+	{
+    	setAdded = new HashSet<Restaurant>();
+
+	}
+	
     @BeforeEach
     public void setUp() throws Exception
     {
@@ -39,6 +48,7 @@ public class RestaurantTest
     @Order(1) 
     public void testPersist()
     {
+
     	restaurant.setActive(true);
     	restaurant.setAddress("Via aldo moro");
     	restaurant.setBackground_url("//url//");
@@ -55,24 +65,41 @@ public class RestaurantTest
     	restaurant.setTelephone("3213323123");
 
     	restaurant_service.persist(restaurant);
+    	System.out.println(restaurant.getJson());
+    	
+    	Restaurant R = restaurant_service.findById(restaurant.getId());
 
+    	setAdded.add(R);
+    	
     }
     
     @Test
     @Order(2) 
     public void testFindById()
     {
-    	Restaurant restaurant = restaurant_service.findById(Long.valueOf(102));
-    	//System.out.println(restaurant.getJson());
 
-    	assertNotNull(restaurant);
-    	//System.out.println(restaurant.getJson());
+    	for(Restaurant R: setAdded)
+    	{
+	    	Restaurant restaurant = restaurant_service.findById(R.getId());
+        	System.out.println("??? "+restaurant.getJson());
+
+	    	assertNotNull(restaurant);
+    	}
     }
     
     @Test
     @Order(3) 
     public void testUpdate()
     {
+
+    	for(Restaurant R: setAdded)
+    	{
+    		System.out.println("ID"+R.getId());
+        	Restaurant Rest = restaurant_service.findById(R.getId());
+        	System.out.println("!!! "+Rest.getJson());
+        	Rest.setName("Aggiornato");
+        	restaurant_service.update(Rest);
+    	}
     	
     }
     
@@ -80,7 +107,8 @@ public class RestaurantTest
     @Order(4) 
     public void testFindAll()
     {
-    	List<Restaurant> restaurants = restaurant_service.findAll();
+
+    	Set<Restaurant> restaurants = restaurant_service.findAll();
     	for(Restaurant R:restaurants)
     		System.out.println(R.getJson());
     	
@@ -90,13 +118,16 @@ public class RestaurantTest
     @Order(5) 
     public void testDelete()
     {
-    	
+
+    	for(Restaurant R: setAdded)
+    	{
+    		restaurant_service.delete(R.getId());
+        	Restaurant restaurant = restaurant_service.findById(R.getId());
+        	assertNull(restaurant);
+
+    	}
+
     }
     
-    @Test
-    public void testApp()
-    {
-        assertTrue( true );
-    }
-    
+   
 }

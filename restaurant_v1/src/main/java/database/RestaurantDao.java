@@ -1,7 +1,9 @@
 package database;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -92,9 +94,9 @@ public class RestaurantDao implements RestaurantDAOInterface {
 		return restaurant;
 	}
     @SuppressWarnings("unchecked")
-	public List<Restaurant> findAll()
+	public Set<Restaurant> findAll()
 	{
-		List<Restaurant> restaurants = (List<Restaurant>) getCurrentSession().createQuery("FROM model.Restaurant", Restaurant.class).getResultList();
+    	HashSet<Restaurant> restaurants = new HashSet<Restaurant>(getCurrentSession().createQuery("FROM model.Restaurant", Restaurant.class).getResultList());
 
 		return restaurants;
 		
