@@ -36,7 +36,7 @@ function sendMail()
 	}
 
 }
-
+var folderProject="restaurant_v1";
 
 function loadInfoLocal(){
     $.get("/Restaurant/servlet/LocalInfo", function(data) {
@@ -88,19 +88,19 @@ window.onload = function()
 	
 	//loadInfoLocal();
 	hideMenuForUser();
-	if(window.location.pathname != "/Restaurant/ChooseLocal.html" && window.location.pathname != "/Restaurant/coming-soon/index.jsp" && window.location.pathname != "/Restaurant/Dashboard/default/Login.html" && window.location.pathname != "/Restaurant/Dashboard/landingpage/Affiliazione.html" && !isLogged() && window.location.pathname != "/Restaurant/servlet/CreateLocal")
+	if(window.location.pathname != "/" + folderProject + "/ChooseLocal.html" && window.location.pathname != "/" + folderProject + "/coming-soon/index.jsp" && window.location.pathname != "/" + folderProject + "/Dashboard/default/Login.html" && window.location.pathname != "/" + folderProject + "/Dashboard/landingpage/Affiliazione.html" && !isLogged() && window.location.pathname != "/" + folderProject + "/servlet/CreateLocal")
 	{
 		
 		var res = localIsActive();
 		//var res = Boolean(localIsActive());
 		if(res == "false")
-			window.location.replace("/Restaurant/coming-soon/index.jsp");
+			window.location.replace("/" + folderProject +"/coming-soon/index.jsp");
 
 		
 		insertAnalytic(window.location.pathname);
 		
 	}
-	if(window.location.pathname == "/Restaurant/menu_1.html")
+	if(window.location.pathname == "/" + folderProject +"/menu_1.html")
 	{
 		isRestaurantChosen();
 		loadInfoLocal();
@@ -119,7 +119,7 @@ window.onload = function()
 		loadPizze(1);
 		
 	}
-	else if(window.location.pathname == "/Restaurant/index.html")
+	else if(window.location.pathname == "/" + folderProject + "/index.html")
 	{
 		isRestaurantChosen();
 		loadInfoLocal();
@@ -142,7 +142,7 @@ window.onload = function()
 		}
 		
 	}
-	else if(window.location.pathname == "/Restaurant/MyAccount.html")
+	else if(window.location.pathname == "/" + folderProject + "/MyAccount.html")
 	{
 		isRestaurantChosen();
 		loadInfoLocal();
@@ -162,13 +162,13 @@ window.onload = function()
 		}
 		else
 		{
-			window.location.replace("/Restaurant/index.html");
+			window.location.replace("/" + folderProject + "/index.html");
 
 				
 		}
 		
 	}
-	else if(window.location.pathname == "/Restaurant/about.html")
+	else if(window.location.pathname == "/" + folderProject + "/about.html")
 	{
 		loadInfoLocal();
 		isRestaurantChosen();
@@ -189,7 +189,7 @@ window.onload = function()
 				hideMenuForUser();
 		}
 	}
-	else if(window.location.pathname == "/Restaurant/contact.html")
+	else if(window.location.pathname == "/" + folderProject + "/contact.html")
 	{
 		loadInfoLocal();
 		isRestaurantChosen();
@@ -210,7 +210,7 @@ window.onload = function()
 				hideMenuForUser();
 		}
 	}
-	else if(window.location.pathname == "/Restaurant/Login.html")
+	else if(window.location.pathname == "/" + folderProject + "/Login.html")
 	{
 		loadInfoLocal();
 		
@@ -230,7 +230,7 @@ window.onload = function()
 				hideMenuForUser();
 		}
 	}
-	else if(window.location.pathname == "/Restaurant/Sign-In.html")
+	else if(window.location.pathname == "/" + folderProject + "/Sign-In.html")
 	{
 		loadInfoLocal();
 		isRestaurantChosen();
@@ -249,7 +249,7 @@ window.onload = function()
 				hideMenuForUser();
 		}
 	}
-	else if(window.location.pathname == "/Restaurant/ConfermaUtente.html")
+	else if(window.location.pathname == "/" + folderProject + "/ConfermaUtente.html")
 	{
 		loadInfoLocal();
 		var url_string = window.location.href;
@@ -275,13 +275,13 @@ window.onload = function()
 				hideMenuForUser();
 		}
 	}
-	else if(window.location.pathname == "/Restaurant/ChooseLocal.html")
+	else if(window.location.pathname == "/" + folderProject + "/ChooseLocal.html")
 	{
 		//loadInfoLocal();
 		loadLocals();
 		$("body select").msDropDown();
 	}
-	else if(window.location.pathname == "/Restaurant/Dashboard/default/index.html")
+	else if(window.location.pathname == "/" + folderProject + "/Dashboard/default/index.html")
 	{
 		loadInfoLocal();
 		if(isLogged() && isAdmin())
@@ -292,22 +292,22 @@ window.onload = function()
 		}
 		else
 		{
-			window.location.replace("/Restaurant/index.html");
+			window.location.replace("/" + folderProject + "/index.html");
 
 				
 		}
 	}
-	else if(window.location.pathname == "/Restaurant/Dashboard/default/Login.html")
+	else if(window.location.pathname == "/" + folderProject + "/Dashboard/default/Login.html")
 	{
 		var par = getQueryVariable("id");
 		if(par == null)
 		{
 			alert("Error");
-			window.location.replace("/Restaurant/index.html");
+			window.location.replace("/" + folderProject + "/index.html");
 		}
 		
 	}
-	else if(window.location.pathname == "/Restaurant/Dashboard/default/Ordini.html")
+	else if(window.location.pathname == "/" + folderProject + "/Dashboard/default/Ordini.html")
 	{
 
 		loadInfoLocal();
@@ -321,12 +321,12 @@ window.onload = function()
 		}
 		else
 		{
-			window.location.replace("/Restaurant/index.html");
+			window.location.replace("/" + folderProject + "/index.html");
 
 				
 		}
 	}
-	else if(window.location.pathname == "/Restaurant/Dashboard/default/Utenti.html")
+	else if(window.location.pathname == "/" + folderProject + "/Dashboard/default/Utenti.html")
 	{
 
 		loadInfoLocal();
@@ -340,12 +340,12 @@ window.onload = function()
 		}
 		else
 		{
-			window.location.replace("/Restaurant/index.html");
+			window.location.replace("/" + folderProject + "/index.html");
 
 				
 		}
 	}
-	else if(window.location.pathname == "/Restaurant/Dashboard/default/Prodotti.html")
+	else if(window.location.pathname == "/" + folderProject + "/Dashboard/default/Prodotti.html")
 	{
 
 		loadInfoLocal();
@@ -362,13 +362,13 @@ window.onload = function()
 		}
 		else
 		{
-			window.location.replace("/Restaurant/index.html");
+			window.location.replace("/" + folderProject + "/index.html");
 
 				
 		}
 	}
 	
-	else if(window.location.pathname == "/Restaurant/Dashboard/default/Ingredienti.html")
+	else if(window.location.pathname == "/" + folderProject + "/Dashboard/default/Ingredienti.html")
 	{
 
 		loadInfoLocal();
@@ -381,12 +381,12 @@ window.onload = function()
 		}
 		else
 		{
-			window.location.replace("/Restaurant/index.html");
+			window.location.replace("/" + folderProject + "/index.html");
 
 				
 		}
 	}
-	else if(window.location.pathname == "/Restaurant/Dashboard/default/Locale.html")
+	else if(window.location.pathname == "/" + folderProject + "/Dashboard/default/Locale.html")
 	{
 		showLocalInfo();
 		loadInfoLocal();
@@ -401,7 +401,7 @@ window.onload = function()
 		}
 		else
 		{
-			window.location.replace("/Restaurant/index.html");
+			window.location.replace("/" + folderProject + "/index.html");
 
 				
 		}
@@ -425,7 +425,7 @@ function openLocal(id)
 {
 	//var id = $("#locals :selected").val(); // The text content of the selected option
 	$.ajax({
-        url: "/Restaurant/servlet/AddLocalSession?id=" + id,
+        url: "/" + folderProject + "/servlet/AddLocalSession?id=" + id,
         type: 'get',
         async: false,
         success: function(data) {
@@ -451,7 +451,7 @@ function loadLocals()
     $('#locals').append("");
     
     $.ajax({
-        url: "/Restaurant/servlet/AllLocals",
+        url: "/" + folderProject + "/servlet/AllLocals",
         type: 'get',
         async: false,
         success: function(data) {
@@ -474,7 +474,7 @@ function confermaUtente(Mail, NumeroTelefono)
 		$(this).removeClass('show-return-msg');
 	});
 	$.ajax({
-        url: "/Restaurant/servlet/ConfermaUtente?Mail="+ Mail + "&NumeroTelefono=" + NumeroTelefono,
+        url: "/" + folderProject + "/servlet/ConfermaUtente?Mail="+ Mail + "&NumeroTelefono=" + NumeroTelefono,
         type: 'get',
         async: false,
         success: function(data) {
@@ -567,7 +567,7 @@ function loadUser()
 	$('#TextData').text("");
 	$('#TextData').append(data);
 
-	$.get("/Restaurant/servlet/isLogged", function(data) {
+	$.get("/" + folderProject + "/servlet/isLogged", function(data) {
 
     	obj = JSON.parse(data);
     	
@@ -679,7 +679,7 @@ function updateUser()
 	if(Nome != "" && Cognome != "" && NumeroTelefono != "" && Password != "" && ConfermaPassword != "" && Mail != "" && Via != "" && NCivico != "" && Citta!="" && Cap!="")
 	{
 		var indirizzo = Via + ", " + NCivico + ", " + Citta + ", " + Cap;
-		$.get("/Restaurant/servlet/UpdateLoggedUser?Nome=" + Nome + "&Cognome=" + Cognome +"&NumeroTelefono=" + NumeroTelefono + "&Password="+Password 
+		$.get("/" + folderProject + "/servlet/UpdateLoggedUser?Nome=" + Nome + "&Cognome=" + Cognome +"&NumeroTelefono=" + NumeroTelefono + "&Password="+Password 
 				+"&Mail=" + Mail + "&Indirizzo=" + indirizzo +"&Disabilitato=false", function(data) {
 			$('#return-msg').text("Utente aggiornato correttamente!");
 			insertLog("Utente_Aggiornato");
@@ -738,7 +738,7 @@ function isRestaurantChosen()
 {
 	var resultbool = false;
 	$.ajax({
-        url: "/Restaurant/servlet/isRestaurantChosen",
+        url: "/" + folderProject + "/servlet/isRestaurantChosen",
         type: 'get',
         async: false,
         success: function(data) {
@@ -749,7 +749,7 @@ function isRestaurantChosen()
     		}
     		else
     		{		
-    			window.location.replace("/Restaurant/ChooseLocal.html");
+    			window.location.replace("/" + folderProject + "/ChooseLocal.html");
     			resultbool = false;
     		}
         } 
@@ -808,7 +808,7 @@ function loadOrders(Filter)
 		{
 			$("#OrdersPanelAll").addClass('active');
 
-			$.get("/Restaurant/servlet/AllOrders", function(data) {
+			$.get("/" + folderProject + "/servlet/AllOrders", function(data) {
 				
 		    	array = JSON.parse(data);
 		    	
@@ -826,7 +826,7 @@ function loadOrders(Filter)
 			else 
 				$("#OrdersPanel"+Filter).addClass('active');
 
-			$.get("/Restaurant/servlet/AllOrders?Stato="+Filter, function(data) {
+			$.get("/" + folderProject + "/servlet/AllOrders?Stato="+Filter, function(data) {
 						
 				 array = JSON.parse(data);
 				    	
@@ -840,7 +840,7 @@ function loadOrders(Filter)
 	{
 		if(Filter == 'All')
 		{
-			$.get("/Restaurant/servlet/OrdersByUser", function(data) {
+			$.get("/" + folderProject + "/servlet/OrdersByUser", function(data) {
 				
 		    	array = JSON.parse(data);
 		    	
@@ -850,7 +850,7 @@ function loadOrders(Filter)
 		}
 		else
 		{
-			$.get("/Restaurant/servlet/OrdersByUser?Stato="+Filter, function(data) {
+			$.get("/" + folderProject + "/servlet/OrdersByUser?Stato="+Filter, function(data) {
 						
 				 array = JSON.parse(data);
 				    	
@@ -960,7 +960,7 @@ function modifyOrder(idOrder)
 	var statoOrdine;
 	
 	$.ajax({
-	        url: "/Restaurant/servlet/OrdersById?idOrdine=" + idOrder,
+	        url: "/" + folderProject + "/servlet/OrdersById?idOrdine=" + idOrder,
 	        type: 'get',
 	        async: false,
 	        success: function(data){
@@ -1134,7 +1134,7 @@ function loadUsersList()
 
 
 	 $.ajax({
-	        url: "/Restaurant/servlet/AllUsers",
+	        url: "/" + folderProject + "/servlet/AllUsers",
 	        type: 'get',
 	        async: false,
 	        success: function(data) {
@@ -1185,7 +1185,7 @@ function loadUsersList()
 
 function updateButton()
 {
-	alert(29);
+	//alert(29);
 	
 	if($("#UserPanel").hasClass('active'))
 	{
@@ -1208,7 +1208,7 @@ function updateOrder()
 function loadProductSlider()
 {
 	
-	$.get("/Restaurant/servlet/AllProducts", function(data) {
+	$.get("/" + folderProject + "/servlet/AllProducts", function(data) {
 
 		if(data != "error")
 		{
@@ -1286,7 +1286,7 @@ function loadProductSlider()
 		}
 		else
 		{
-			window.location.replace("/Restaurant/ChooseLocal.html");
+			window.location.replace("/" + folderProject + "/ChooseLocal.html");
 		}
 	});
 	
@@ -1303,7 +1303,7 @@ function loadPizze(pageNumber){
 	$("#FrittiFilter").removeClass('active');
 	$("#InsalateFilter").removeClass('active');
 	$("#AllFilter").removeClass('active');
-	$.get("/Restaurant/servlet/ProductsByType?Type=Pizza", function(data) {
+	$.get("/" + folderProject + "/servlet/ProductsByType?Type=Pizza", function(data) {
 
 		var array = JSON.parse(data);
     	
@@ -1464,7 +1464,7 @@ function loadAllProducts(pageNumber){
 	$("#InsalateFilter").removeClass('active');
 	$("#AllFilter").addClass('active');
 
-	$.get("/Restaurant/servlet/AllProducts", function(data) {
+	$.get("/" + folderProject + "/servlet/AllProducts", function(data) {
 
     	var array = JSON.parse(data);
     	
@@ -1583,7 +1583,7 @@ function loadPanini(pageNumber){
 	$("#InsalateFilter").removeClass('active');
 	$("#AllFilter").removeClass('active');
 
-	$.get("/Restaurant/servlet/ProductsByType?Type=Panino", function(data) {
+	$.get("/" + folderProject + "/servlet/ProductsByType?Type=Panino", function(data) {
 
     	array = JSON.parse(data);
     	
@@ -1689,7 +1689,7 @@ function loadFritti(pageNumber){
 	$("#InsalateFilter").removeClass('active');
 	$("#AllFilter").removeClass('active');
 
-	$.get("/Restaurant/servlet/ProductsByType?Type=Fritti", function(data) {
+	$.get("/" + folderProject + "/servlet/ProductsByType?Type=Fritti", function(data) {
 
 		var array = JSON.parse(data);
     	
@@ -1795,7 +1795,7 @@ function loadInsalate(pageNumber){
 	$("#InsalateFilter").addClass('active');
 	$("#AllFilter").removeClass('active');
 
-	$.get("/Restaurant/servlet/ProductsByType?Type=Insalata", function(data) {
+	$.get("/" + folderProject + "/servlet/ProductsByType?Type=Insalata", function(data) {
 
 		var array = JSON.parse(data);
     	
@@ -1893,7 +1893,7 @@ function loadInsalate(pageNumber){
 }
 function loadIngredients(idProd, pos)
 {
-	$.get("/Restaurant/servlet/IngredientsOfProduct?id=" + idProd, function(data) {
+	$.get("/" + folderProject + "/servlet/IngredientsOfProduct?id=" + idProd, function(data) {
 		
     	var array = JSON.parse(data);
     	for (var k=0; k<array.length; k++)
@@ -1929,7 +1929,7 @@ function onSignIn(googleUser) {
 	  var id_token = googleUser.getAuthResponse().id_token;
 
 	  $.ajax({
-	        url: "/Restaurant/servlet/tokenSignin?Token="+id_token,
+	        url: "/" + folderProject + "/servlet/tokenSignin?Token="+id_token,
 	        type: 'get',
 	        async: false,
 	        success: function(data) {
@@ -1975,7 +1975,7 @@ function loginDashboard()
 	if(par == null)
 	{
 		alert("Error");
-		window.location.replace("/Restaurant/index.html");
+		window.location.replace("/" + folderProject + "/index.html");
 	}	
 
 	
@@ -1984,11 +1984,11 @@ function loginDashboard()
 	alert(Mail);
 	alert(Pass);
 
-	$.get("/Restaurant/servlet/Login?Mail=" + Mail + "&Password=" + Pass + "&idLocal=" + par, function(data) {
+	$.get("/" + folderProject + "/servlet/Login?Mail=" + Mail + "&Password=" + Pass + "&idLocal=" + par, function(data) {
 		var obj = JSON.parse(data);
 		if(obj.Stato == "Logged")
 		{
-			window.location.href = "/Restaurant/Dashboard/default/index.html";
+			window.location.href = "/" + folderProject + "/Dashboard/default/index.html";
 			insertLog("Login");
 		}
 		else
@@ -2007,7 +2007,7 @@ function Login()
 	//alert(Mail);
 	if(Mail != "" && Password != "")
 	{
-		$.get("/Restaurant/servlet/Login?Mail=" + Mail + "&Password=" + Password, function(data) {
+		$.get("/" + folderProject + "/servlet/Login?Mail=" + Mail + "&Password=" + Password, function(data) {
 			var obj = JSON.parse(data);
 			if(obj.Stato == "Logged")
 			{
@@ -2029,7 +2029,7 @@ function isLogged()
 {
 	var resultbool = false;
 	$.ajax({
-        url: "/Restaurant/servlet/isLogged",
+        url: "/" + folderProject + "/servlet/isLogged",
         type: 'get',
         async: false,
         success: function(data) {
@@ -2057,7 +2057,7 @@ function isAdmin()
 {
 	var resultbool = false;
 	$.ajax({
-        url: "/Restaurant/servlet/isLogged",
+        url: "/" + folderProject + "/servlet/isLogged",
         type: 'get',
         async: false,
         success: function(data) {
@@ -2077,7 +2077,7 @@ function Logout()
 {
 	
 	signOut();
-	$.get("/Restaurant/servlet/Logout", function(data) {
+	$.get("/" + folderProject + "/servlet/Logout", function(data) {
 		$('#my-signin2').hide();
 		location.reload();
 	});
@@ -2105,7 +2105,7 @@ function registraUser()
 	if(Nome != "" && Cognome != "" && NumeroTelefono != "" && Password != "" && ConfermaPassword != "" && Mail != "" && Via != "" && NCivico != "" && Citta!="" && Cap!="")
 	{
 		var indirizzo = Via + ", " + NCivico + ", " + Citta + ", " + Cap;
-		$.get("/Restaurant/servlet/SaveUser?Nome=" + Nome + "&Cognome=" + Cognome +"&NumeroTelefono=" + NumeroTelefono + "&Password="+Password 
+		$.get("/" + folderProject + "/servlet/SaveUser?Nome=" + Nome + "&Cognome=" + Cognome +"&NumeroTelefono=" + NumeroTelefono + "&Password="+Password 
 				+"&Mail=" + Mail + "&Indirizzo=" + indirizzo + "&Amministratore=0&Confermato=0", function(data) {
 			$('#return-msg').text("Utente registrato correttamente! Controlla la mail per confermare l'account");
 			insertLog("Utente_Registrato");
@@ -2164,7 +2164,7 @@ function IncreaseQuantityProduct(index)
 {
 	var id = $('#idProductCart'+index).text();
 
-	return $.get("/Restaurant/servlet/IncreaseQuantityProduct?idProduct=" + id, function(data) {
+	return $.get("/" + folderProject + "/servlet/IncreaseQuantityProduct?idProduct=" + id, function(data) {
 		if(data == "Ok")
 		{
 			loadCart();
@@ -2178,7 +2178,7 @@ function DecreaseQuantityProduct(ind)
 {
 	var id = $('#idProductCart'+ind).text();
 	
-	return $.get("/Restaurant/servlet/DecreaseQuantityProduct?idProduct=" + id, function(data) {
+	return $.get("/" + folderProject + "/servlet/DecreaseQuantityProduct?idProduct=" + id, function(data) {
 		
 		loadCart();
 			if(data == "Ok")
@@ -2198,7 +2198,7 @@ function addCart(indexButton)
 	if(isLogged())	
 	{		
 		var id = $('#idProduct'+indexButton).text();
-		$.get("/Restaurant/servlet/addToCart?idProduct=" + id, function(data) {
+		$.get("/" + folderProject + "/servlet/addToCart?idProduct=" + id, function(data) {
 			//alert(data);
 			var array = JSON.parse(data);
 			
@@ -2221,7 +2221,7 @@ function addCart(indexButton)
 function loadCart()
 {
 	
-	return $.get("/Restaurant/servlet/GetCart", function(data) {
+	return $.get("/" + folderProject + "/servlet/GetCart", function(data) {
 		
 		var array = JSON.parse(data);
 		if(array.length > 0)
@@ -2497,7 +2497,7 @@ function loadCart()
 
 function loadCartQuantity()
 {
-	return $.get("/Restaurant/servlet/GetCart", function(data) {
+	return $.get("/" + folderProject + "/servlet/GetCart", function(data) {
 		
 		var array = JSON.parse(data);
 		if(array.length > 0)
@@ -2523,7 +2523,7 @@ function SaveNewsletter()
 		$(this).removeClass('show-return-msg');
 	});
 	var mail = $("#newsletterMail").val();
-	return $.get("/Restaurant/servlet/SaveNewsletter?Mail="+ mail , function(data) {
+	return $.get("/" + folderProject + "/servlet/SaveNewsletter?Mail="+ mail , function(data) {
 			
 			
 			if(data == "Ok")
@@ -2546,7 +2546,7 @@ function Order(Pagato)
 	var checked = $("#switchDelivery").is(':checked');
 	
 	
-	return $.get("/Restaurant/servlet/SaveOrder?Asporto="+ checked+"&Pagato="+Pagato, function(data) {
+	return $.get("/" + folderProject + "/servlet/SaveOrder?Asporto="+ checked+"&Pagato="+Pagato, function(data) {
 		
 		
 		if(data == "Ok")
@@ -2557,7 +2557,7 @@ function Order(Pagato)
 			
 			$('#cartQuantity').text(0);
 			//REDIRECT TO ORDER SECTION
-			window.location.replace("/Restaurant/MyAccount.html");
+			window.location.replace("/" + folderProject + "/MyAccount.html");
 		}
 	});
 	
@@ -2585,7 +2585,7 @@ function hideMenuForUser()
 
 function insertAnalytic(Page)
 {
-	$.get("/Restaurant/servlet/SaveAnalytic?Pagina="+ Page , function(data) {
+	$.get("/" + folderProject + "/servlet/SaveAnalytic?Pagina="+ Page , function(data) {
 		
 		if(data == "Ok")
 		{
@@ -2598,7 +2598,7 @@ function insertAnalytic(Page)
 //LOG 
 function insertLog(Evento)
 {
-	$.get("/Restaurant/servlet/SaveLog?Event="+ Evento , function(data) {
+	$.get("/" + folderProject + "/servlet/SaveLog?Event="+ Evento , function(data) {
 		
 		if(data == "Ok")
 		{
@@ -2626,7 +2626,7 @@ function loadDashboardHomeInfo()
 {
 	if(isAdmin())
 	{
-		$.get("/Restaurant/servlet/LocalInfo", function(data) {
+		$.get("/" + folderProject + "/servlet/LocalInfo", function(data) {
 	        var obj = JSON.parse(data);
 	        $('#logo').attr("src", "../../"+obj.LogoURL);
 	        /*
@@ -2640,7 +2640,7 @@ function loadDashboardHomeInfo()
 	        */
 	    });
 		
-		$.get("/Restaurant/servlet/AllAnalytic" , function(data) {
+		$.get("/" + folderProject + "/servlet/AllAnalytic" , function(data) {
 			
 			array = JSON.parse(data);
 			
@@ -2648,7 +2648,7 @@ function loadDashboardHomeInfo()
 			
 		});
 		
-		$.get("/Restaurant/servlet/AllOrders", function(data) {
+		$.get("/" + folderProject + "/servlet/AllOrders", function(data) {
 			
 	    	array = JSON.parse(data);
 	    	
@@ -2669,7 +2669,7 @@ function loadDashboardHomeInfo()
 	        $('#currentTime4').text("aggiornato : " + time);
 	    });
 		
-		$.get("/Restaurant/servlet/AllUsers", function(data) {
+		$.get("/" + folderProject + "/servlet/AllUsers", function(data) {
 			
 	    	array = JSON.parse(data);
 	    	$('#NUsers').text(array.length);
@@ -2678,7 +2678,7 @@ function loadDashboardHomeInfo()
 
 		
 		
-		$.get("/Restaurant/servlet/AllProducts", function(data) {
+		$.get("/" + folderProject + "/servlet/AllProducts", function(data) {
 			
 	    	array = JSON.parse(data);
 	    	
@@ -2693,7 +2693,7 @@ function loadDashboardHomeInfo()
 	    		var NVendite = 0;
 	    		
 	    		$.ajax({
-	    	        url: "/Restaurant/servlet/OrdersByProduct?idProdotto="+obj.id,
+	    	        url: "/" + folderProject + "/servlet/OrdersByProduct?idProdotto="+obj.id,
 	    	        type: 'get',
 	    	        async: false,
 	    	        success: function(data_temp) {
@@ -2773,7 +2773,7 @@ function loadDashboardHomeInfo()
 
 function showNewOrder()
 {
-	$.get("/Restaurant/servlet/OrdersByState?Stato=Richiesto" , function(data) {
+	$.get("/" + folderProject + "/servlet/OrdersByState?Stato=Richiesto" , function(data) {
 		
 		array = JSON.parse(data);
 		
@@ -2808,7 +2808,7 @@ function loadOrderTable(Filter, page)
 			
 			$("#OrdersPanelAll").addClass('active');
 
-			$.get("/Restaurant/servlet/AllOrders", function(data) {
+			$.get("/" + folderProject + "/servlet/AllOrders", function(data) {
 				
 		    	array = JSON.parse(data);
 		    	
@@ -2826,7 +2826,7 @@ function loadOrderTable(Filter, page)
 			else 
 				$("#OrdersPanel"+Filter).addClass('active');
 
-			$.get("/Restaurant/servlet/AllOrders?Stato="+Filter, function(data) {
+			$.get("/" + folderProject + "/servlet/AllOrders?Stato="+Filter, function(data) {
 						
 				 array = JSON.parse(data);
 				 //alert(array);
@@ -2840,7 +2840,7 @@ function loadOrderTable(Filter, page)
 	{
 		if(Filter == 'All')
 		{
-			$.get("/Restaurant/servlet/OrdersByUser", function(data) {
+			$.get("/" + folderProject + "/servlet/OrdersByUser", function(data) {
 				
 		    	array = JSON.parse(data);
 		    	
@@ -3088,7 +3088,7 @@ function showOrderTable(array, pageNumber)
 
 function showOrderProducts(idOrder)
 {
-	$.get("/Restaurant/servlet/OrdersById?idOrdine="+idOrder , function(data) {
+	$.get("/" + folderProject + "/servlet/OrdersById?idOrdine="+idOrder , function(data) {
 		
 		var obj = JSON.parse(data);
 		
@@ -3225,7 +3225,7 @@ function updateOrder(idOrder, Stato, Asporto, Costo, Pagato)
 		Asp = true;
 	*/
 	alert(Costo);
-	$.get("/Restaurant/servlet/UpdateOrder?idOrdine="+idOrder+"&Stato="+Stato+"&Asporto="+Asporto+"&Costo="+Costo+"&Pagato="+Pagato , function(data) {
+	$.get("/" + folderProject + "/servlet/UpdateOrder?idOrdine="+idOrder+"&Stato="+Stato+"&Asporto="+Asporto+"&Costo="+Costo+"&Pagato="+Pagato , function(data) {
 		
 		if(data != "Ok")
 			alert("error");
@@ -3234,7 +3234,7 @@ function updateOrder(idOrder, Stato, Asporto, Costo, Pagato)
 
 function deleteOrder(idOrder)
 {
-	$.get("/Restaurant/servlet/DeleteOrder?idOrdine="+idOrder, function(data) {
+	$.get("/" + folderProject + "/servlet/DeleteOrder?idOrdine="+idOrder, function(data) {
 		
 		if(data != "Ok")
 			alert("error");
@@ -3389,7 +3389,7 @@ function hideReviewLocal()
 	//alert("1");
 	if(isLogged())
 	{
-		$.get("/Restaurant/servlet/ReviewLocalByLocalUser" , function(data) {
+		$.get("/" + folderProject + "/servlet/ReviewLocalByLocalUser" , function(data) {
 			
 			if(data != "null")
 				$('#ReviewDIV').text("");
@@ -3401,7 +3401,7 @@ function hideReviewLocal()
 function saveReviewProduct(idProduct, rating)
 {
 	
-	$.get("/Restaurant/servlet/SaveReviewProduct?idProdotto="+idProduct+"&Voto="+rating , function(data) {
+	$.get("/" + folderProject + "/servlet/SaveReviewProduct?idProdotto="+idProduct+"&Voto="+rating , function(data) {
 		
 		if(data != "Ok")
 			alert("error");
@@ -3413,7 +3413,7 @@ function saveReviewProduct(idProduct, rating)
 function saveReviewLocal(rating, Review)
 {
 	
-	$.get("/Restaurant/servlet/SaveReviewLocal?Voto="+rating +"&Recensione=" + Review , function(data) {
+	$.get("/" + folderProject + "/servlet/SaveReviewLocal?Voto="+rating +"&Recensione=" + Review , function(data) {
 		
 		if(data != "Ok")
 			alert("error");
@@ -3430,7 +3430,7 @@ function saveReviewLocal(rating, Review)
 function showOrderProductIngredients(idProduct)
 {
 	
-	$.get("/Restaurant/servlet/IngredientsOfProduct?id="+idProduct , function(data) {
+	$.get("/" + folderProject + "/servlet/IngredientsOfProduct?id="+idProduct , function(data) {
 		
 		var array = JSON.parse(data);
 		
@@ -3451,7 +3451,7 @@ function showOrderProductIngredients(idProduct)
 		
 		var c2 = "";
 		$.ajax({
-	        url: "/Restaurant/servlet/AllIngredients",
+	        url: "/" + folderProject + "/servlet/AllIngredients",
 	        type: 'get',
 	        async: false,
 	        success: function(data) {
@@ -3540,7 +3540,7 @@ function showOrderProductIngredients(idProduct)
 }
 function add_row_product()
 {
-	$.get("/Restaurant/servlet/AllIngredients", function(data) {
+	$.get("/" + folderProject + "/servlet/AllIngredients", function(data) {
            
         	var array = JSON.parse(data);
         	
@@ -3610,7 +3610,7 @@ function add_row_product()
 function add_row_ingredient()
 {
 	alert("as");
-	$.get("/Restaurant/servlet/AllIngredients", function(data) {
+	$.get("/" + folderProject + "/servlet/AllIngredients", function(data) {
            
         	var array = JSON.parse(data);
         	
@@ -3657,7 +3657,7 @@ function refreshIngredientPrice(idIngrediente)
 {
 	//alert($("#ingredientiSelect"+idIngrediente ).val());
 	var ingSelect = $("#ingredientiSelect"+idIngrediente ).val();
-	$.get("/Restaurant/servlet/IngredientById?idIngrediente="+ingSelect , function(data) {
+	$.get("/" + folderProject + "/servlet/IngredientById?idIngrediente="+ingSelect , function(data) {
 		
 		obj = JSON.parse(data);
 		
@@ -3686,7 +3686,7 @@ function loadUsersTable(Filter, page)
 			
 			$("#OrdersPanelAll").addClass('active');
 
-			$.get("/Restaurant/servlet/AllUsers", function(data) {
+			$.get("/" + folderProject + "/servlet/AllUsers", function(data) {
 				
 		    	array = JSON.parse(data);
 		    	
@@ -3709,7 +3709,7 @@ function loadUsersTable(Filter, page)
 				parameter = "true";
 			}
 			
-			$.get("/Restaurant/servlet/AllUsersByConfirm?Confermati="+parameter, function(data) {
+			$.get("/" + folderProject + "/servlet/AllUsersByConfirm?Confermati="+parameter, function(data) {
 				
 				 array = JSON.parse(data);
 				 //alert(array);
@@ -3952,7 +3952,7 @@ function showUserTable(array, pageNumber)
 
 function updateUserWithPar(numerotelefono, nome, cognome, mail, indirizzo, admin, confermato, disabilitato)
 {
-	$.get("/Restaurant/servlet/UpdateUser?NumeroTelefono="+numerotelefono+"&Nome="+nome+"&Cognome="+cognome+"&Mail="+mail+"&Indirizzo="+indirizzo+"&Amministratore="+admin+"&Confermato="+confermato+"&Disabilitato="+disabilitato , function(data) {
+	$.get("/" + folderProject + "/servlet/UpdateUser?NumeroTelefono="+numerotelefono+"&Nome="+nome+"&Cognome="+cognome+"&Mail="+mail+"&Indirizzo="+indirizzo+"&Amministratore="+admin+"&Confermato="+confermato+"&Disabilitato="+disabilitato , function(data) {
 		
 		if(data != "Ok")
 			alert("error");
@@ -3967,7 +3967,7 @@ function updateUserWithPar(numerotelefono, nome, cognome, mail, indirizzo, admin
 function showAllProducts(pageNumber)
 {
 	
-	$.get("/Restaurant/servlet/AllProducts" , function(data) {
+	$.get("/" + folderProject + "/servlet/AllProducts" , function(data) {
 		
 		var array = JSON.parse(data);
 
@@ -4240,7 +4240,7 @@ function loadIngredientsTable()
 	
 	var c2 = "";
 	$.ajax({
-        url: "/Restaurant/servlet/AllIngredients",
+        url: "/" + folderProject + "/servlet/AllIngredients",
         type: 'get',
         async: false,
         success: function(data) {
@@ -4281,7 +4281,7 @@ function refreshIngredientProductPrice(idIngrediente)
 {
 	//alert($("#ingredientiSelect"+idIngrediente ).val());
 	var ingSelect = $("#ingredientiSelect").val();
-	$.get("/Restaurant/servlet/IngredientById?idIngrediente="+ingSelect , function(data) {
+	$.get("/" + folderProject + "/servlet/IngredientById?idIngrediente="+ingSelect , function(data) {
 		
 		obj = JSON.parse(data);
 		
@@ -4298,7 +4298,7 @@ function loadTypeProducts()
 	rows = rows + "<option value='null'>Seleziona la tipologia</option>";
 
 	$.ajax({
-        url: "/Restaurant/servlet/AllTypeOfProduct",
+        url: "/" + folderProject + "/servlet/AllTypeOfProduct",
         type: 'get',
         async: false,
         success: function(data) {
@@ -4325,7 +4325,7 @@ function loadTypeProducts()
 function updateProduct(id, nome, costo, tipo)
 {
 	//alert(costo);
-	$.get("/Restaurant/servlet/UpdateProduct?idProdotto="+id+"&Nome="+nome+"&Costo="+costo+"&Tipo="+tipo+"&ImageURL=null" , function(data) {
+	$.get("/" + folderProject + "/servlet/UpdateProduct?idProdotto="+id+"&Nome="+nome+"&Costo="+costo+"&Tipo="+tipo+"&ImageURL=null" , function(data) {
 		
 		if(data != "Ok")
 			alert("error");
@@ -4336,7 +4336,7 @@ function updateProduct(id, nome, costo, tipo)
 
 function showLocalInfo()
 {
-	$.get("/Restaurant/servlet/LocalInfo", function(data) {
+	$.get("/" + folderProject + "/servlet/LocalInfo", function(data) {
         var obj = JSON.parse(data);
         //$('#logo').attr("src", obj.LogoURL);
         $('#nome').val(obj.Name);
@@ -4373,7 +4373,7 @@ function showLocalInfo()
 
 function showAllIngredients1(pageNumber)
 {
-	$.get("/Restaurant/servlet/AllIngredients" , function(data) {
+	$.get("/" + folderProject + "/servlet/AllIngredients" , function(data) {
 		
 		var array = JSON.parse(data);
 		
@@ -4519,7 +4519,7 @@ function showAllIngredients1(pageNumber)
 }
 function updateIngrediente(id, nome, costo)
 {
-	$.get("/Restaurant/servlet/UpdateIngrediente?idIngrediente="+id+"&Nome="+nome+"&Costo="+costo, function(data) {
+	$.get("/" + folderProject + "/servlet/UpdateIngrediente?idIngrediente="+id+"&Nome="+nome+"&Costo="+costo, function(data) {
 		
 		if(data != "Ok")
 			alert("error");
