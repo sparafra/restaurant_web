@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.persistence.*;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 @Entity
@@ -12,12 +11,10 @@ import org.json.JSONObject;
 public class Log {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "log_generator")
-	@SequenceGenerator(name="log_generator", sequenceName = "log_seq",  allocationSize=50)
+	@SequenceGenerator(name="log_generator", sequenceName = "log_seq",  allocationSize=1)
 	Long id;
 	
 	String event;
-	//String NumeroTelefono;
-	//Long idLocale;
 	Date date_time;
 	
 	

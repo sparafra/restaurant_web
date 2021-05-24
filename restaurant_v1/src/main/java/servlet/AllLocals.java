@@ -1,9 +1,7 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,13 +22,11 @@ public class AllLocals extends HttpServlet{
 			HttpServletResponse resp) throws ServletException, IOException {
 	
 				RestaurantService restaurant_service = new RestaurantService();
-				//Restaurant x = restaurant_service.findById(Long.valueOf(1));
-				List<Restaurant> restaurants = restaurant_service.findAll();
+
+				Set<Restaurant> restaurants = restaurant_service.findAll();
 				
 				JSONArray jArray = new JSONArray();
-				
-				//jArray.put(x.getJson());
-				
+								
 				for(Restaurant R: restaurants)
 				{
 					jArray.put(R.getJson());
@@ -39,7 +35,6 @@ public class AllLocals extends HttpServlet{
 				resp.setContentType("text/plain");
 				resp.setCharacterEncoding("UTF-8");
 				resp.getWriter().write(jArray.toString());
-		
 		
 	}
 }

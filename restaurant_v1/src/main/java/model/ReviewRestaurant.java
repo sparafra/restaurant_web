@@ -31,7 +31,6 @@ public class ReviewRestaurant extends Review {
 		this.id = new ReviewRestaurantUserId(restaurant.getId(), user.getTelephone());
 		this.user = user;
 		this.restaurant = restaurant;
-		//this.user = user;
 		this.review = review;
 	}
 	public ReviewRestaurant() {super();}

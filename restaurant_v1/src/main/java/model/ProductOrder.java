@@ -1,9 +1,7 @@
 package model;
 
-import java.util.List;
 import javax.persistence.*;
 
-import org.json.JSONArray;
 import org.json.JSONObject;  
 
 @Entity

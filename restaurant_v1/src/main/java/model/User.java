@@ -22,27 +22,26 @@ public class User {
     String password;
     boolean approved;
     boolean admin;
-    //Long idLocale;
     boolean disabled;
 
-    @ManyToMany(targetEntity = Restaurant.class, cascade = { CascadeType.ALL })
+    @ManyToMany(fetch=FetchType.EAGER, targetEntity = Restaurant.class, cascade = { CascadeType.ALL })
     @JoinTable(name = "restaurant_user", 
 	joinColumns = { @JoinColumn(name = "user_id") }, 
 	inverseJoinColumns = { @JoinColumn(name = "restaurant_id") })
     List<Restaurant> listRestaurants;
     
-    @OneToMany(targetEntity = Order.class, cascade = {CascadeType.ALL})
+    @OneToMany(fetch=FetchType.EAGER, targetEntity = Order.class, cascade = {CascadeType.ALL})
     @JoinColumn(name="telephone")
     List<Order> listOrders;
     
-    @OneToMany(targetEntity = Log.class, cascade = {CascadeType.ALL})
+    @OneToMany(fetch=FetchType.EAGER, targetEntity = Log.class, cascade = {CascadeType.ALL})
     @JoinColumn(name="telephone")
 	List<Log> listLogs;
     
-    @OneToMany(mappedBy = "restaurant", targetEntity = ReviewRestaurant.class)
+    @OneToMany(fetch=FetchType.EAGER, mappedBy = "restaurant", targetEntity = ReviewRestaurant.class)
     List<ReviewRestaurant> listReviewRestaurant;
     
-    @OneToMany(mappedBy = "product", targetEntity = ReviewProduct.class)
+    @OneToMany(fetch=FetchType.EAGER, mappedBy = "product", targetEntity = ReviewProduct.class)
     List<ReviewProduct> listReviewProduct;
 
     public User(){disabled = false; }

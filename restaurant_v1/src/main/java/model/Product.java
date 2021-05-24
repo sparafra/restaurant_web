@@ -1,10 +1,9 @@
 package model;
 
-import java.util.List;
+import java.util.Set;
+
 import javax.persistence.*;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.json.JSONArray;
 import org.json.JSONObject;  
 
@@ -13,41 +12,39 @@ import org.json.JSONObject;
 public class Product {
 	@Id
 	@GeneratedValue(generator = "product_generator")
-	@SequenceGenerator(name="product_generator", sequenceName = "product_seq",  allocationSize=50)
+	@SequenceGenerator(name="product_generator", sequenceName = "product_seq",  allocationSize=1)
 	Long id;
 	
     String name;
     float price;
     String image_url;
     
-    @ManyToMany(targetEntity = Ingredient.class, cascade = {CascadeType.ALL})
+    @ManyToMany(fetch=FetchType.EAGER, targetEntity = Ingredient.class, cascade = {CascadeType.ALL})
     @JoinTable(
     		name = "product_ingredient",
     		joinColumns = {@JoinColumn(name="product_id")},
     		inverseJoinColumns = {@JoinColumn(name ="ingredient_id")})
-    List<Ingredient> listIngredients;
+    Set<Ingredient> listIngredients;
         
-	@ManyToMany(targetEntity = Type.class, cascade = {CascadeType.ALL})
+	@ManyToMany(fetch=FetchType.EAGER, targetEntity = Type.class, cascade = {CascadeType.ALL})
     @JoinTable(
     		name = "product_type",
     		joinColumns = {@JoinColumn(name="product_id")},
     		inverseJoinColumns = {@JoinColumn(name ="type_id")})
-    List<Type> listTypes;
+	Set<Type> listTypes;
 	
-	@OneToMany(mappedBy = "order")
-    //@OneToMany(targetEntity = ProductOrder.class, cascade = {CascadeType.ALL})
-	//@JoinColumn(name="idProduct")
-	List<ProductOrder> listProductOrder;
+	@OneToMany(fetch=FetchType.EAGER, mappedBy = "order")
+	Set<ProductOrder> listProductOrder;
 	
-	@OneToMany(mappedBy = "user")
-    List<ReviewProduct> listReviewProduct;
+	@OneToMany(fetch=FetchType.EAGER, mappedBy = "user")
+	Set<ReviewProduct> listReviewProduct;
 
     
     public  Product() { }
     
 
-    public Product(String name, float price, String image_url, List<Ingredient> listIngredients, List<Type> listTypes,
-			List<ProductOrder> listProductOrder, List<ReviewProduct> listReviewProduct) {
+    public Product(String name, float price, String image_url, Set<Ingredient> listIngredients, Set<Type> listTypes,
+    		Set<ProductOrder> listProductOrder, Set<ReviewProduct> listReviewProduct) {
 		super();
 		this.name = name;
 		this.price = price;
@@ -92,35 +89,35 @@ public class Product {
 	}
 
 
-	public List<Ingredient> getListIngredients() {
+	public Set<Ingredient> getListIngredients() {
 		return listIngredients;
 	}
 
-	public void setListIngredients(List<Ingredient> listIngredients) {
+	public void setListIngredients(Set<Ingredient> listIngredients) {
 		this.listIngredients = listIngredients;
 	}
 
-	public List<Type> getListTypes() {
+	public Set<Type> getListTypes() {
 		return listTypes;
 	}
 
-	public void setListTypes(List<Type> listTypes) {
+	public void setListTypes(Set<Type> listTypes) {
 		this.listTypes = listTypes;
 	}
 
-	public List<ProductOrder> getListProductOrder() {
+	public Set<ProductOrder> getListProductOrder() {
 		return listProductOrder;
 	}
 
-	public void setListProductOrder(List<ProductOrder> listProductOrder) {
+	public void setListProductOrder(Set<ProductOrder> listProductOrder) {
 		this.listProductOrder = listProductOrder;
 	}
 
-	public List<ReviewProduct> getListReviewProduct() {
+	public Set<ReviewProduct> getListReviewProduct() {
 		return listReviewProduct;
 	}
 
-	public void setListReviewProduct(List<ReviewProduct> listReviewProduct) {
+	public void setListReviewProduct(Set<ReviewProduct> listReviewProduct) {
 		this.listReviewProduct = listReviewProduct;
 	}  
 
@@ -135,36 +132,47 @@ public class Product {
 
 		JSONArray ingredients = new JSONArray();
 		
-		for(Ingredient i: listIngredients)
+		if(listIngredients != null)
 		{
-			ingredients.put(i.getJson());
+			for(Ingredient i: listIngredients)
+			{
+				ingredients.put(i.getJson());
+			}
 		}
 		
 		obj.put("listIngredients", ingredients);
 		
 		JSONArray types = new JSONArray();
 		
-		for(Type t: listTypes)
+		if(listTypes != null)
 		{
-			types.put(t.getJson());
+			for(Type t: listTypes)
+			{
+				types.put(t.getJson());
+			}
 		}
-		
 		obj.put("listTypes", types);
 		
 		JSONArray productorders = new JSONArray();
 		
-		for(ProductOrder po: listProductOrder)
+		if(listProductOrder != null)
 		{
-			productorders.put(po.getJson());
+			for(ProductOrder po: listProductOrder)
+			{
+				productorders.put(po.getJson());
+			}
 		}
 		
 		obj.put("listProductOrder", productorders);
 		
 		JSONArray reviewproducts = new JSONArray();
 		
-		for(ReviewProduct rp: listReviewProduct)
+		if(listReviewProduct != null)
 		{
-			reviewproducts.put(rp.getJson());
+			for(ReviewProduct rp: listReviewProduct)
+			{
+				reviewproducts.put(rp.getJson());
+			}
 		}
 		
 		obj.put("listReviewProduct", reviewproducts);

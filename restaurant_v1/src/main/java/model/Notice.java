@@ -9,7 +9,7 @@ import org.json.JSONObject;
 public class Notice {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notice_generator")
-	@SequenceGenerator(name="notice_generator", sequenceName = "notice_seq",  allocationSize=50)
+	@SequenceGenerator(name="notice_generator", sequenceName = "notice_seq",  allocationSize=1)
 	Long id;
 	
 	boolean state;

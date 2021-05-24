@@ -2,39 +2,34 @@ package restaurant.restaurant_v1;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.*;  
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 import model.Restaurant;
 import service.RestaurantService;  
 
 
 /**
- * Unit test for simple App.
+ * Unit test.
  */
+
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RestaurantTest 
 {
     /**
-     * Create the test case
+     * Test Case
      *
-     * @param testName name of the test case
+     *
      */
 	
 	Restaurant restaurant;
 	RestaurantService restaurant_service;
 	
-	static HashSet<Restaurant> setAdded;
     
 	@BeforeAll
 	public static void init() throws Exception
 	{
-    	setAdded = new HashSet<Restaurant>();
-
 	}
 	
     @BeforeEach
@@ -48,7 +43,6 @@ public class RestaurantTest
     @Order(1) 
     public void testPersist()
     {
-
     	restaurant.setActive(true);
     	restaurant.setAddress("Via aldo moro");
     	restaurant.setBackground_url("//url//");
@@ -65,41 +59,64 @@ public class RestaurantTest
     	restaurant.setTelephone("3213323123");
 
     	restaurant_service.persist(restaurant);
-    	System.out.println(restaurant.getJson());
     	
-    	Restaurant R = restaurant_service.findById(restaurant.getId());
-
-    	setAdded.add(R);
-    	
+    		
     }
     
     @Test
     @Order(2) 
     public void testFindById()
     {
+    	
+    	//Add Restaurant
+    	restaurant.setActive(true);
+    	restaurant.setAddress("Via aldo moro");
+    	restaurant.setBackground_url("//url//");
+    	restaurant.setListAnalytics(null);
+    	restaurant.setListLogs(null);
+    	restaurant.setListNotices(null);
+    	restaurant.setListOrders(null);
+    	restaurant.setListProducts(null);
+    	restaurant.setListReviewRestaurant(null);
+    	restaurant.setListUsers(null);
+    	restaurant.setLogo_url("//url//");
+    	restaurant.setMail("info@mail.it");
+    	restaurant.setName("pachino");
+    	restaurant.setTelephone("3213323123");
 
-    	for(Restaurant R: setAdded)
-    	{
-	    	Restaurant restaurant = restaurant_service.findById(R.getId());
-        	System.out.println("??? "+restaurant.getJson());
-
-	    	assertNotNull(restaurant);
-    	}
+    	restaurant_service.persist(restaurant);
+    	
+    	//Find Restaurant
+	    Restaurant restaurant_finded = restaurant_service.findById(restaurant.getId());
+	    assertNotNull(restaurant_finded);
+    	
     }
     
     @Test
     @Order(3) 
     public void testUpdate()
     {
+    	//Add Restaurant
+    	restaurant.setActive(true);
+    	restaurant.setAddress("Via aldo moro");
+    	restaurant.setBackground_url("//url//");
+    	restaurant.setListAnalytics(null);
+    	restaurant.setListLogs(null);
+    	restaurant.setListNotices(null);
+    	restaurant.setListOrders(null);
+    	restaurant.setListProducts(null);
+    	restaurant.setListReviewRestaurant(null);
+    	restaurant.setListUsers(null);
+    	restaurant.setLogo_url("//url//");
+    	restaurant.setMail("info@mail.it");
+    	restaurant.setName("pachino");
+    	restaurant.setTelephone("3213323123");
 
-    	for(Restaurant R: setAdded)
-    	{
-    		System.out.println("ID"+R.getId());
-        	Restaurant Rest = restaurant_service.findById(R.getId());
-        	System.out.println("!!! "+Rest.getJson());
-        	Rest.setName("Aggiornato");
-        	restaurant_service.update(Rest);
-    	}
+    	restaurant_service.persist(restaurant);
+    	
+    	//Update 
+    	restaurant.setName("Aggiornato");
+    	restaurant_service.update(restaurant);
     	
     }
     
@@ -107,27 +124,71 @@ public class RestaurantTest
     @Order(4) 
     public void testFindAll()
     {
-
-    	Set<Restaurant> restaurants = restaurant_service.findAll();
-    	for(Restaurant R:restaurants)
-    		System.out.println(R.getJson());
+    	//Add Restaurant
+    	restaurant.setActive(true);
+    	restaurant.setAddress("Via aldo moro");
+    	restaurant.setBackground_url("//url//");
+    	restaurant.setListAnalytics(null);
+    	restaurant.setListLogs(null);
+    	restaurant.setListNotices(null);
+    	restaurant.setListOrders(null);
+    	restaurant.setListProducts(null);
+    	restaurant.setListReviewRestaurant(null);
+    	restaurant.setListUsers(null);
+    	restaurant.setLogo_url("//url//");
+    	restaurant.setMail("info@mail.it");
+    	restaurant.setName("pachino");
+    	restaurant.setTelephone("3213323123");
     	
+    	restaurant_service.persist(restaurant);
+
+    	restaurant.setId(null);
+    	restaurant.setName("pachino2");
+    	
+    	restaurant_service.persist(restaurant);
+    	
+    	
+    	Set<Restaurant> restaurants = restaurant_service.findAll();
+    	for(Restaurant R: restaurants)
+    		System.out.println(R.getJson());	
+    	
+    	assertEquals(restaurants.size(), 2);
     }
     
     @Test
     @Order(5) 
     public void testDelete()
     {
-
-    	for(Restaurant R: setAdded)
-    	{
-    		restaurant_service.delete(R.getId());
-        	Restaurant restaurant = restaurant_service.findById(R.getId());
-        	assertNull(restaurant);
-
-    	}
-
+    	//Add Restaurant
+    	restaurant.setActive(true);
+    	restaurant.setAddress("Via aldo moro");
+    	restaurant.setBackground_url("//url//");
+    	restaurant.setListAnalytics(null);
+    	restaurant.setListLogs(null);
+    	restaurant.setListNotices(null);
+    	restaurant.setListOrders(null);
+    	restaurant.setListProducts(null);
+    	restaurant.setListReviewRestaurant(null);
+    	restaurant.setListUsers(null);
+    	restaurant.setLogo_url("//url//");
+    	restaurant.setMail("info@mail.it");
+    	restaurant.setName("pachino");
+    	restaurant.setTelephone("3213323123");
+    	
+    	restaurant_service.persist(restaurant);
+    	
+    	
+    	restaurant_service.delete(restaurant.getId());
+        Restaurant R = restaurant_service.findById(restaurant.getId());
+        assertNull(R);
+    	
     }
     
-   
+    @AfterAll
+    public void clear()
+    {
+    	Set<Restaurant> restaurants = restaurant_service.findAll();
+    	for(Restaurant R: restaurants)
+    		restaurant_service.delete(R.getId());
+    }
 }

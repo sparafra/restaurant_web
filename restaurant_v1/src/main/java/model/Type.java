@@ -1,10 +1,8 @@
 package model;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.json.JSONArray;
 import org.json.JSONObject;  
 
@@ -14,17 +12,17 @@ public class Type {
 	
 	@Id
 	@GeneratedValue(generator = "type_generator")
-	@SequenceGenerator(name="type_generator", sequenceName = "type_seq",  allocationSize=50)
+	@SequenceGenerator(name="type_generator", sequenceName = "type_seq",  allocationSize=1)
 
 	Long id;
 	String name;
 	
-	@ManyToMany(targetEntity = Product.class, cascade = { CascadeType.ALL })
-	 @JoinTable(
+	@ManyToMany(fetch=FetchType.EAGER, targetEntity = Product.class, cascade = { CascadeType.ALL })
+	@JoinTable(
 	    		name = "product_type",
 	    		joinColumns = {@JoinColumn(name="type_id")},
 	    		inverseJoinColumns = {@JoinColumn(name ="product_id")})
-	List<Product> listProducts;
+	Set<Product> listProducts;
 
 	public Type(String name)
 	{
@@ -45,10 +43,10 @@ public class Type {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<Product> getListProducts() {
+	public Set<Product> getListProducts() {
 		return listProducts;
 	}
-	public void setListProducts(List<Product> listProducts) {
+	public void setListProducts(Set<Product> listProducts) {
 		this.listProducts = listProducts;
 	}
 	
@@ -88,9 +86,12 @@ public class Type {
 		
 		JSONArray products = new JSONArray();
 		
-		for(Product p: listProducts)
+		if(listProducts != null)
 		{
-			products.put(p.getJson());
+			for(Product p: listProducts)
+			{
+				products.put(p.getJson());
+			}
 		}
 		
 		obj.put("listProducts", listProducts);

@@ -14,13 +14,11 @@ public class Analytic {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "analytic_generator")
-	@SequenceGenerator(name="analytic_generator", sequenceName = "analytic_seq",  allocationSize=50)
-
+	@SequenceGenerator(name="analytic_generator", sequenceName = "analytic_seq",  allocationSize=1)
 	Long id;
+	
 	String page;
 	Date date_time;
-	
-	
 	
 	public Analytic()
 	{

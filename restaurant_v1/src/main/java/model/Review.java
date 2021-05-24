@@ -1,23 +1,14 @@
 package model;
 
 import java.util.Date;
-import java.util.List;
 import javax.persistence.*;
 
-import org.json.JSONArray;
 import org.json.JSONObject;  
-
-//@Entity
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 
 @MappedSuperclass
 public abstract class Review {
 
-	
-	
-	
 	int vote;
-		
 	Date date_time;
 	
     public Review(int vote, Date date_time)
@@ -30,7 +21,6 @@ public abstract class Review {
     {
     	
     }
-    
     
     //Getters and Setters
 	

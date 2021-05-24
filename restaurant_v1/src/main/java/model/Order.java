@@ -1,8 +1,8 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
+
 import javax.persistence.*;
 
 import org.json.JSONArray;
@@ -13,7 +13,7 @@ import org.json.JSONObject;
 public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_generator")
-	@SequenceGenerator(name="orders_generator", sequenceName = "orders_seq",  allocationSize=50)
+	@SequenceGenerator(name="orders_generator", sequenceName = "orders_seq",  allocationSize=1)
     Long id;
 	
     String state;
@@ -22,15 +22,14 @@ public class Order {
     Date date_time;  
     boolean paid;
     
-    //@OneToMany(targetEntity = ProductOrder.class, cascade = {CascadeType.ALL})
-    @OneToMany(mappedBy = "product")
-    List<ProductOrder> listProductOrder;
+    @OneToMany(fetch=FetchType.EAGER, mappedBy = "product")
+    Set<ProductOrder> listProductOrder;
 
     
     public Order(){}
     
 
-	public Order(String state, Boolean take_away, List<ProductOrder> listProductOrder, Float price, Date date_time,
+	public Order(String state, Boolean take_away, Set<ProductOrder> listProductOrder, Float price, Date date_time,
 			boolean paid) {
 		super();
 		this.state = state;
@@ -91,11 +90,11 @@ public class Order {
 		this.paid = paid;
 	}
 
-	public List<ProductOrder> getListProductOrder() {
+	public Set<ProductOrder> getListProductOrder() {
 		return listProductOrder;
 	}
 
-	public void setListProductOrder(List<ProductOrder> listProductOrder) {
+	public void setListProductOrder(Set<ProductOrder> listProductOrder) {
 		this.listProductOrder = listProductOrder;
 	}
 
@@ -128,11 +127,13 @@ public class Order {
 		
 		JSONArray productorders = new JSONArray();
 		
-		for(ProductOrder po: listProductOrder)
+		if(listProductOrder != null)
 		{
-			productorders.put(po.getJson());
+			for(ProductOrder po: listProductOrder)
+			{
+				productorders.put(po.getJson());
+			}
 		}
-		
 		obj.put("listProductsOrder", productorders);
 		
 		

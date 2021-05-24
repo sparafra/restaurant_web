@@ -1,10 +1,9 @@
 package model;
 
-import java.util.List;
+import java.util.Set;
+
 import javax.persistence.*;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.json.JSONArray;
 import org.json.JSONObject;    
 
@@ -13,18 +12,18 @@ import org.json.JSONObject;
 public class Ingredient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingredient_generator")
-	@SequenceGenerator(name="ingredient_generator", sequenceName = "ingredient_seq",  allocationSize=50)
+	@SequenceGenerator(name="ingredient_generator", sequenceName = "ingredient_seq",  allocationSize=1)
 	Long id;
 	
     String name;
     float price;
     
-    @ManyToMany(targetEntity = Product.class, cascade = { CascadeType.ALL })
+    @ManyToMany(fetch=FetchType.EAGER, targetEntity = Product.class, cascade = { CascadeType.ALL })
     @JoinTable(
     		name = "product_ingredient",
     		joinColumns = {@JoinColumn(name="ingredient_id")},
     		inverseJoinColumns = {@JoinColumn(name ="product_id")})
-    List<Product> listProducts;
+    Set<Product> listProducts;
     
     
    
@@ -55,10 +54,10 @@ public class Ingredient {
 	public void setPrice(float price) {
 		this.price = price;
 	}
-	public List<Product> getListProducts() {
+	public Set<Product> getListProducts() {
 		return listProducts;
 	}
-	public void setListProducts(List<Product> listProducts) {
+	public void setListProducts(Set<Product> listProducts) {
 		this.listProducts = listProducts;
 	}
 
@@ -72,11 +71,13 @@ public class Ingredient {
 		
 		JSONArray products = new JSONArray();
 		
-		for(Product p: listProducts)
+		if(listProducts != null)
 		{
-			products.put(p.getJson());
+			for(Product p: listProducts)
+			{
+				products.put(p.getJson());
+			}
 		}
-		
 		obj.put("listProducts", listProducts);
 		
 		
