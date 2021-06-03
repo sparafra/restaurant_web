@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-import model.Email;
+//import model.Email;
 
 
 
@@ -26,8 +26,8 @@ public class SendMail extends HttpServlet{
 		
 		String FinalMessage = "Nome: " + Nome +"\r\n" + "Oggetto: " + Oggetto +"\r\n" + "Mail: " + Mail +"\r\n" + "Messaggio: " + Messaggio;
 		
-		Email mail = new Email();
-		mail.Send(Oggetto, FinalMessage);
+		//Email mail = new Email();
+		//mail.Send(Oggetto, FinalMessage);
 		   
 		
 	}

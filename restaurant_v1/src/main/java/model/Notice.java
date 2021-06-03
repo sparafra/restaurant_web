@@ -105,5 +105,19 @@ public class Notice {
 		
 		return obj;
 	}
+	public JSONObject getJson(Class c)
+	{
+		JSONObject obj = new JSONObject();
+
+		obj.put("id", id);
+		obj.put("state", state);
+		obj.put("created_by", created_by);
+		obj.put("message", message);
+		obj.put("received_by", received_by);
+		obj.put("type", type);
+		obj.put("title", title);
+		
+		return obj;
+	}
 	
 }

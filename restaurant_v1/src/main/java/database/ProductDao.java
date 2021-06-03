@@ -1,7 +1,9 @@
 package database;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -31,7 +33,8 @@ public class ProductDao implements ProductDAOInterface {
     public EntityManager openCurrentSessionwithTransaction() {
 		current_entityManager = getEntityManager();
 		current_transaction = current_entityManager.getTransaction();
-		
+		current_transaction.begin();
+
         return current_entityManager;
     }
      
@@ -90,9 +93,9 @@ public class ProductDao implements ProductDAOInterface {
 		return product;
 	}
     @SuppressWarnings("unchecked")
-	public List<Product> findAll()
+	public Set<Product> findAll()
 	{
-		List<Product> products = (List<Product>) getCurrentSession().createQuery("from model.Product", Product.class).getResultList();
+    	Set<Product> products = new HashSet<Product>( getCurrentSession().createQuery("from model.Product", Product.class).getResultList());
 
 		return products;
 	}

@@ -1,7 +1,9 @@
 package database;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -32,7 +34,8 @@ public class IngredientDao implements IngredientDAOInterface {
     public EntityManager openCurrentSessionwithTransaction() {
 		current_entityManager = getEntityManager();
 		current_transaction = current_entityManager.getTransaction();
-		
+		current_transaction.begin();
+
         return current_entityManager;
     }
      
@@ -90,9 +93,9 @@ public class IngredientDao implements IngredientDAOInterface {
 		return ingredient;
 	}
     @SuppressWarnings("unchecked")
-	public List<Ingredient> findAll()
+	public Set<Ingredient> findAll()
 	{
-		List<Ingredient> ingredients = (List<Ingredient>) getCurrentSession().createQuery("from model.Ingredient", Ingredient.class).getResultList();
+		Set<Ingredient> ingredients = new HashSet<Ingredient> (getCurrentSession().createQuery("from model.Ingredient", Ingredient.class).getResultList());
 
 		return ingredients;
 		

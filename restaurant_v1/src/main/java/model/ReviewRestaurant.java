@@ -67,5 +67,16 @@ public class ReviewRestaurant extends Review {
 		
 		return obj;
 	}
+	public JSONObject getJson(Class c)
+	{
+		JSONObject obj = new JSONObject();
+
+		obj.put("id", id.getJson());
+		obj.put("restaurant", restaurant);
+		obj.put("review", review);
+		obj.put("user", user.getJson());
+		
+		return obj;
+	}
 	
 }

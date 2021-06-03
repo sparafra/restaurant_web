@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -40,15 +41,19 @@ public class AllProducts extends HttpServlet{
 					
 					if(Rest != null)
 					{
+						System.out.println("PRODUCT: " + Rest.getId());
 						Restaurant restaurant_session = restaurant_service.findById(Rest.getId());
 
-						List<Product> products = restaurant_session.getListProducts();
+						Set<Product> products = restaurant_session.getListProducts();
 						
 						JSONArray jArray = new JSONArray();
 						
-						for(Product p: products)
+						if(products != null)
 						{
-							jArray.put(p.getJson());
+							for(Product p: products)
+							{
+								jArray.put(p.getJson());
+							}
 						}
 						
 						resp.getWriter().write(jArray.toString());					
@@ -108,7 +113,8 @@ public class AllProducts extends HttpServlet{
 						resp.getWriter().write(Error.GENERIC_ERROR.toString());	
 					}
 				}
-				resp.getWriter().write(Error.BLANK_SESSION.toString());	
+				else
+					resp.getWriter().write(Error.BLANK_SESSION.toString());	
 			
 		
 	}

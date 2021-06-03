@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -33,7 +34,7 @@ public class AllTypeOfProduct extends HttpServlet{
 				try {
 					TypeService type_service = new TypeService();
 					
-					List<Type> types = type_service.findAll();
+					Set<Type> types = type_service.findAll();
 					
 					JSONArray jArray = new JSONArray();
 					

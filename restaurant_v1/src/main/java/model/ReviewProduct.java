@@ -58,4 +58,14 @@ public class ReviewProduct extends Review {
 		
 		return obj;
 	}
+	public JSONObject getJson(Class c)
+	{
+		JSONObject obj = new JSONObject();
+
+		obj.put("id", id.getJson());
+		obj.put("product", product.getJson());
+		obj.put("user", user.getJson());
+		
+		return obj;
+	}
 }

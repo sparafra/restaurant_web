@@ -14,23 +14,21 @@
     <link rel="stylesheet" href="css\style-v2.css">
     <!-- Modernizr runs quickly on page load for detecting features -->
     <script src="js\modernizr.custom.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}\assets\js\loader_info.js" ></script>
-	
+    <script type="text/javascript" src="<%= request.getContextPath() %>\assets\js\loader_info.js" ></script>
+    
 </head>
 <body>
 
 	<%@ page import="model.Restaurant" %>
-	<%@ page import="database.*" %>
+	<%@ page import="service.*" %>
 	
 	<%! Restaurant restaurant;  %>
-	<%! DBConnection dbConnection; %>
-	<%! RestaurantDaoJDBC RestaurantDao;%>
+	<%! RestaurantService restaurant_service;%>
 	<%! Restaurant rest; %>
 	
 	<%  restaurant = (Restaurant)session.getAttribute("Restaurant");%>
-	<%  dbConnection = new DBConnection(); %>
-	<%  RestaurantDao = new RestaurantDaoJDBC(dbConnection); %>
-	<%  if(restaurant != null)rest = RestaurantDao.findByPrimaryKeyJoin(restaurant.getId()); %>
+	<%  restaurant_service = new RestaurantService(); %>
+	<%  if(restaurant != null)rest = restaurant_service.findById(restaurant.getId()); %>
 	
 	<%!
 		boolean isInSession(){
@@ -78,8 +76,8 @@
                     <div class="content-slide">
                         <div class="container">
                         	<% if (isInSession()) { %>
-                        		<% if(isOffline()) { System.out.println(rest.getLogoURL());%>
-									<img src="../<%=rest.getLogoURL()%>" alt="" class="brand-logo text-intro opacity-0">
+                        		<% if(isOffline()) { System.out.println(rest.getLogo_url());%>
+									<img src="../<%=rest.getLogo_url()%>" alt="" class="brand-logo text-intro opacity-0">
 								<% } else { %>
 									<script type="text/javascript">
 									    window.location = "../index.html";

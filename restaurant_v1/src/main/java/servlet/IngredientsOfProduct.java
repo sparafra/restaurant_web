@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,7 +28,7 @@ public class IngredientsOfProduct extends HttpServlet{
 				ProductService product_service = new ProductService();
 				Product product = product_service.findById(id);
 				
-				List<Ingredient> ingredients = product.getListIngredients();
+				Set<Ingredient> ingredients = product.getListIngredients();
 				
 				JSONArray jArray = new JSONArray();
 				

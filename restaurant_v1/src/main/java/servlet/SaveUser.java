@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,7 +26,7 @@ import model.ReviewProduct;
 import model.ReviewRestaurant;
 import model.User;
 import service.RestaurantService;
-import model.Email;
+import utils.PasswordUtil;
 import model.Error;
 import model.Log;
 import model.Order;
@@ -63,27 +65,35 @@ public class SaveUser extends HttpServlet{
 					user.setName(Nome);
 					user.setSurname(Cognome);
 					user.setTelephone(NumeroTelefono);
-					user.setPassword(Password);
+					
+					String salt = PasswordUtil.generateSalt(256).get();
+		    		String hash_key = PasswordUtil.hashPassword(Password, salt).get();
+		    		System.out.println(hash_key);
+		    		System.out.println(salt);
+
+		    		user.setPassword(hash_key);
+					user.setSalt(salt);
+					
 					user.setMail(Mail);
 					user.setAddress(Indirizzo);
 					user.setAdmin(Amministratore);
 					user.setApproved(Confermato);
 					user.setDisabled(false);
-					user.setListLogs(new ArrayList<Log>());
-					user.setListOrders(new ArrayList<Order>());
-					ArrayList<Restaurant> list = new ArrayList<Restaurant>();
-					list.add(restaurant_session);
-					user.setListRestaurants(list);
-					user.setListReviewProduct(new ArrayList<ReviewProduct>());
-					user.setListReviewRestaurant(new ArrayList<ReviewRestaurant>());
+					user.setListLogs(new HashSet<Log>());
+					user.setListOrders(new HashSet<Order>());
+					Set<Restaurant> set = new HashSet<Restaurant>();
+					set.add(restaurant_session);
+					user.setListRestaurants(set);
+					user.setListReviewProduct(new HashSet<ReviewProduct>());
+					user.setListReviewRestaurant(new HashSet<ReviewRestaurant>());
 					
 					restaurant_session.getListUsers().add(user);
 					restaurant_service.update(restaurant_session);
 					
 					String Message = "Registrazione effettuata con successo! \r\n" + "Mail: " + user.getMail() + "\r\n" + "Password: " + user.getPassword() +"\r\n"+ "Conferma il tuo account: http://localhost:8080/Restaurant/ConfermaUtente.html?NumeroTelefono="+user.getTelephone()+"&Mail="+user.getMail();
 						
-					Email mail = new Email();
-					mail.Send(user.getMail(), "Registrazione effettuata!", Message);
+					//Email mail = new Email();
+					//mail.Send(user.getMail(), "Registrazione effettuata!", Message);
 						
 					resp.getWriter().write(Error.COMPLETED.toString());
 				

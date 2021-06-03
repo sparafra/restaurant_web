@@ -139,5 +139,30 @@ public class Order {
 		
 		return obj;
 	}
+	public JSONObject getJson(Class c)
+	{
+		JSONObject obj = new JSONObject();
+
+		obj.put("id", id);
+		obj.put("state", state);
+		obj.put("take_away", take_away);
+		obj.put("price", price);
+		obj.put("date_time", date_time);
+		obj.put("paid", paid);
+		
+		JSONArray productorders = new JSONArray();
+		
+		if(listProductOrder != null && c == Class.PRODUCTORDER)
+		{
+			for(ProductOrder po: listProductOrder)
+			{
+				productorders.put(po.getJson());
+			}
+		}
+		obj.put("listProductsOrder", productorders);
+		
+		
+		return obj;
+	}
     
 }

@@ -1,3 +1,20 @@
+const Error = {
+	BLANK_SESSION: "BLANK_SESSION",
+	NOT_FOUNDED: "NOT_FOUNDED",
+	COMPLETED: "COMPLETED",
+	GENERIC_ERROR: "GENERIC_ERROR",
+	NOT_APPROVED: "NOT_APPROVED",
+	WRONG_PASSWORD: "WRONG_PASSWORD",
+	ALREADY_EXISTS: "ALREADY_EXISTS",
+	LOGGED: "LOGGED",
+}
+
+var folderProject="restaurant_v1";
+var b = true;
+
+sliderTestImage = "/" + folderProject + "/assets/images/slider/1.jpg";
+thumbnailTestImage = "/" + folderProject + "/assets/images/slider2/1_small.jpg";
+
 
 //MAIL 
 function sendMail()
@@ -13,7 +30,7 @@ function sendMail()
 	});
 	if(Nome != "" && Mail != "" && Subject != "" && Message != "")
 	{
-		$.get("/Restaurant/servlet/SendMail?Name=" + Nome + "&Mail=" + Mail +"&Subject=" + Subject + "&Message="+Message, function(data) {
+		$.get("/" + folderProject + "/servlet/SendMail?Name=" + Nome + "&Mail=" + Mail +"&Subject=" + Subject + "&Message="+Message, function(data) {
 			$('#return-msg').text("Email inviata correttamente!");
 			insertLog("Mail_Inviata");
 	    });
@@ -36,23 +53,22 @@ function sendMail()
 	}
 
 }
-var folderProject="restaurant_v1";
 
 function loadInfoLocal(){
-    $.get("/Restaurant/servlet/LocalInfo", function(data) {
+    $.get("/" + folderProject + "/servlet/LocalInfo", function(data) {
         var obj = JSON.parse(data);
-        $('#logo').attr("src", obj.LogoURL);
-        $('#NomeLocale').text(obj.Name);
-        $('#logoFooter').attr("src", obj.LogoURL);
-        $('#NomeLocaleFooter').text(obj.Name);
-        $("#Address").text(obj.Address);
-        $("#Mail").append(obj.Mail);
-        $("#Telephone").append(obj.Telephone);
-        $("#Telephone1").append(obj.Telephone);
+        $('#logo').attr("src", obj.logo_url);
+        $('#NomeLocale').text(obj.name);
+        $('#logoFooter').attr("src", obj.logo_url);
+        $('#NomeLocaleFooter').text(obj.name);
+        $("#Address").text(obj.address);
+        $("#Mail").append(obj.mail);
+        $("#Telephone").append(obj.telephone);
+        $("#Telephone1").append(obj.telephone);
     });
 }
 function showPreviewLogo(){
-    $.get("/Restaurant/servlet/LocalInfo", function(data) {
+    $.get("/" + folderProject + "/servlet/LocalInfo", function(data) {
         var obj = JSON.parse(data);
         $('#logoAnteprima').attr("src", "../../" + obj.LogoURL);
         
@@ -62,14 +78,14 @@ function localIsActive()
 {
 	var boolres = "false";
 	$.ajax({
-        url: "/Restaurant/servlet/LocalBySession",
+        url: "/" + folderProject + "/servlet/LocalBySession",
         type: 'get',
         async: false,
         success: function(data) {
-        	if(data != "BLANK_SESSION")
+        	if(data != Error.BLANK_SESSION)
         	{
 	        	var obj = JSON.parse(data);
-	        	var res = Boolean(obj.Active);
+	        	var res = Boolean(obj.active);
 	        	if(res == true)
 	        		boolres = "true";
 	        	
@@ -78,10 +94,7 @@ function localIsActive()
      });
 	return boolres;
 }
-var b = true;
 
-sliderTestImage = "/Restaurant/assets/images/slider/1.jpg";
-thumbnailTestImage = "/Restaurant/assets/images/slider2/1_small.jpg";
 	
 window.onload = function() 
 {
@@ -92,12 +105,11 @@ window.onload = function()
 	{
 		
 		var res = localIsActive();
-		//var res = Boolean(localIsActive());
 		if(res == "false")
 			window.location.replace("/" + folderProject +"/coming-soon/index.jsp");
 
 		
-		insertAnalytic(window.location.pathname);
+		//insertAnalytic(window.location.pathname);
 		
 	}
 	if(window.location.pathname == "/" + folderProject +"/menu_1.html")
@@ -429,15 +441,14 @@ function openLocal(id)
         type: 'get',
         async: false,
         success: function(data) {
-        	var obj = JSON.parse(data);
-        	if(obj.Stato != "Ok")
+        	//var obj = JSON.parse(data);
+        	if(data != Error.COMPLETED)
         	{
-        		alert("Error: " + obj.Stato);
+        		alert("Error");
         	}
         	else
         	{
-    			window.location.replace("/Restaurant/index.html");
-
+    			window.location.replace("/" + folderProject + "/index.html");
         	}
         } 
      });
@@ -461,7 +472,7 @@ function loadLocals()
             {
         		var obj = array[i];
         		
-        		$('#locals').append("<option value='" + obj.id + "' title='" + obj.LogoURL + "'></option>")		
+        		$('#locals').append("<option value='" + obj.id + "' title='" + obj.logo_url + "'></option>")		
             }
         } 
      });
@@ -479,7 +490,7 @@ function confermaUtente(Mail, NumeroTelefono)
         async: false,
         success: function(data) {
         	var obj = JSON.parse(data);
-			if(obj.Stato == "Confermato")
+			if(obj.Stato == Error.COMPLETED)
     		{
     			var obj = JSON.parse(data);
 				$('#return-msg').text("Utente confermato correttamente! Effettua il login");
@@ -631,10 +642,10 @@ function showLocals(arrayLocals)
 				"<div class='icon-box'>"+
 					"<div class='icon-box-inner' onclick='openLocal("+ arrayLocals[i].id +")'>"+
 						"<div class='icon-box-icon'>"+
-							"<img src='"+ arrayLocals[i].LogoURL +"' class='center' alt='LogoLocals'>"+
+							"<img src='"+ arrayLocals[i].logo_url +"' class='center' alt='LogoLocals'>"+
 						"</div>"+
 					"</div>"+
-					"<h3 class='bottom-line'>" + arrayLocals[i].Name +"</h3>"+
+					"<h3 class='bottom-line'>" + arrayLocals[i].name +"</h3>"+
 				"</div>"+
 			"</div>";
 		
@@ -743,7 +754,7 @@ function isRestaurantChosen()
         async: false,
         success: function(data) {
             result = data;
-            if(data != "NOT_FOUNDED")
+            if(data != Error.NOT_FOUNDED)
     		{
     			resultbool = true;
     		}
@@ -1210,7 +1221,7 @@ function loadProductSlider()
 	
 	$.get("/" + folderProject + "/servlet/AllProducts", function(data) {
 
-		if(data != "error")
+		if(data != Error.GENERIC_ERROR)
 		{
 
 	    	array = JSON.parse(data);
@@ -1219,16 +1230,16 @@ function loadProductSlider()
 	    	for (var i=0; i<array.length && i<=5; i++)
 	        {
 	        	var obj = array[i];
-	        	var name = obj.Name;
-	        	var price = obj.Price;
-	        	var imageURL = obj.ImageURL;
+	        	var name = obj.name;
+	        	var price = obj.price;
+	        	var image_url = obj.image_url;
 	        	
-	        	if (!UrlExists(imageURL))
+	        	if (!UrlExists(image_url))
 	        	{
-	        		imageURL = sliderTestImage;
+	        		image_url = sliderTestImage;
 	        		//alert(imageURL);
 	        	}
-	        	var ingredients = obj.Ingredients;
+	        	var ingredients = obj.listIngredients;
 	        	
 	        	var p1;
 	        	var p2;
@@ -1249,23 +1260,23 @@ function loadProductSlider()
 	
 	        	$("#Price1Slider"+(i+1)).append("<span class='price-currency'>€</span><span class='price-val-1'>" + p1 +"</span>");
 	        	$("#Price2Slider"+(i+1)).append("<span class='price-val-2'>" + p2 +"</span>");
-	        	if(imageURL != "null" && imageURL != sliderTestImage)
+	        	if(image_url != "null" && image_url != sliderTestImage)
 	        	{
-	        		var temp = String(imageURL).substring(0, String(imageURL).indexOf("MainImage"));
+	        		var temp = String(image_url).substring(0, String(image_url).indexOf("MainImage"));
 	        		//alert(temp);
 	        		var tempSlider = temp + "Slider/" + name + ".png";
-	        		//tempSlider = tempSlider + String(imageURL).substring(String(imageURL).indexOf("."));
+	        		//tempSlider = tempSlider + String(image_url).substring(String(image_url).indexOf("."));
 
 	        		var tempThumbnail = temp + "Thumbnail/" + name + ".png";
-	        		//tempThumbnail = tempThumbnail + String(imageURL).substring(String(imageURL).indexOf("."));
+	        		//tempThumbnail = tempThumbnail + String(image_url).substring(String(image_url).indexOf("."));
 	
 	        		$("#ImageSlider"+(i+1)).attr('src',  tempSlider );
 	        		$("#ImageThumbnail"+(i+1)).attr('src', tempThumbnail );
 	        	}
-	        	else if (imageURL == sliderTestImage)
+	        	else if (image_url == sliderTestImage)
 	        	{
 	        		//alert("OK");
-	        		$("#ImageSlider"+(i+1)).attr('src',  imageURL );
+	        		$("#ImageSlider"+(i+1)).attr('src',  image_url );
 	        		$("#ImageThumbnail"+(i+1)).attr('src', thumbnailTestImage );
 
 	        	}
@@ -1276,7 +1287,7 @@ function loadProductSlider()
 		        {
 		        	if(ingredients[k].Name != "null")
 		        	{
-		        		$("#IngredientSlider"+(i+1)).append(ingredients[k].Name);
+		        		$("#IngredientSlider"+(i+1)).append(ingredients[k].name);
 		        		if(k < ingredients.length-1)
 		        			$("#IngredientSlider"+(i+1)).append(", ");
 		        	}
@@ -2008,15 +2019,15 @@ function Login()
 	if(Mail != "" && Password != "")
 	{
 		$.get("/" + folderProject + "/servlet/Login?Mail=" + Mail + "&Password=" + Password, function(data) {
-			var obj = JSON.parse(data);
-			if(obj.Stato == "Logged")
+			//var obj = JSON.parse(data);
+			if(data == Error.LOGGED)
 			{
 				window.location.href = "index.html";
 				insertLog("Login");
 			}
 			else
 			{
-				alert(obj.Stato);
+				alert(data);
 			}
 		
 		});
@@ -2034,7 +2045,7 @@ function isLogged()
         async: false,
         success: function(data) {
             result = data;
-            if(data != "BLANK_SESSION")
+            if(data != Error.BLANK_SESSION)
     		{
     			var obj = JSON.parse(data);
     			$("#WelcomeMessage").text("Benvenuto " + obj.Nome + " " + obj.Cognome);
@@ -2062,11 +2073,11 @@ function isAdmin()
         async: false,
         success: function(data) {
             result = data;
-            if(data != "Not Logged")
+            if(data != Error.BLANK_SESSION)
     		{
     			var obj = JSON.parse(data);
     			
-    			resultbool = obj.Amministratore;
+    			resultbool = obj.admin;
     		}
     		
         } 
@@ -2165,7 +2176,7 @@ function IncreaseQuantityProduct(index)
 	var id = $('#idProductCart'+index).text();
 
 	return $.get("/" + folderProject + "/servlet/IncreaseQuantityProduct?idProduct=" + id, function(data) {
-		if(data == "Ok")
+		if(data == Error.COMPLETED)
 		{
 			loadCart();
 			return true;
@@ -2181,7 +2192,7 @@ function DecreaseQuantityProduct(ind)
 	return $.get("/" + folderProject + "/servlet/DecreaseQuantityProduct?idProduct=" + id, function(data) {
 		
 		loadCart();
-			if(data == "Ok")
+			if(data == Error.COMPLETED)
 			{
 				return true;
 			}
@@ -2237,27 +2248,27 @@ function loadCart()
 		        {
 		    		var obj = array[i];
 		    		//alert(obj.ImageURL);
-		    		cartQuantity += obj.Quantity;
-		    		total+= obj.Quantity*obj.Price;
-		    		$('#QuantityProductCart'+i).val(obj.Quantity);
+		    		cartQuantity += obj.quantity;
+		    		total+= obj.quantity*obj.price;
+		    		$('#QuantityProductCart'+i).val(obj.quantity);
 		    		$('#CartForm').append("<div class='product-preview-small'>" +
 	                        "<div class='product-img'>"+
-	                            "<img alt='product-photo' src='"+ obj.ImageURL+ "'>"+
+	                            "<img alt='product-photo' src='"+ obj.image_url+ "'>"+
 	                        "</div>"+
 	                        "<div class='product-content'>"+
 	                            "<div class='row'>"+
 	                                "<div class='col-md-8'>"+
-	                                    "<h4 class='product-title'>" + obj.Name + "</h4>" + "<h4 hidden class='product-title' id='idProductCart"+ i + "'>"+ obj.id + "</h4>"+
-	                                    "Prezzo €"+ obj.Price +"/, order"+
+	                                    "<h4 class='product-title'>" + obj.name + "</h4>" + "<h4 hidden class='product-title' id='idProductCart"+ i + "'>"+ obj.id + "</h4>"+
+	                                    "Prezzo €"+ obj.price +"/, order"+
 	                                    "<div class='product-pieces'>"+
-	                                        "<input id='QuantityProductCart" + i + "' type='text' value='" + obj.Quantity + "'>"+
+	                                        "<input id='QuantityProductCart" + i + "' type='text' value='" + obj.quantity + "'>"+
 	                                        "<div class='product-pieces-up' onclick='IncreaseQuantityProduct(" + i + ");'></div>"+
 	                                        "<div class='product-pieces-down' onclick='DecreaseQuantityProduct(" + i + ");'></div>"+
 	                                    "</div>"+
 	                                    "pieces"+
 	                                "</div>"+
 	                                "<div class='col-md-4 product-price'>€"+
-	                                    (obj.Price*obj.Quantity)+
+	                                    (obj.Price*obj.quantity)+
 	                                "</div>"+
 	                            "</div>"+
 	                        "</div><!-- .product-content -->"+
@@ -2488,7 +2499,7 @@ function loadCart()
                 "</div>")
 		    	var cartQuantity = 0;
 				$('#cartQuantity').text(0);
-				$('#QuantityProductCart'+i).val(obj.Quantity);
+				$('#QuantityProductCart'+i).val(obj.quantity);
 				return false;
 			}
 	});
@@ -2508,7 +2519,7 @@ function loadCartQuantity()
 		        {
 		    		var obj = array[i];
 		    		//alert(obj.ImageURL);
-		    		cartQuantity += obj.Quantity;
+		    		cartQuantity += obj.quantity;
 		    		
 		        }
 		    	$('#cartQuantity').text(cartQuantity);
@@ -2549,7 +2560,7 @@ function Order(Pagato)
 	return $.get("/" + folderProject + "/servlet/SaveOrder?Asporto="+ checked+"&Pagato="+Pagato, function(data) {
 		
 		
-		if(data == "Ok")
+		if(data == Error.COMPLETED)
 		{
 			alert("Ordine effettuato con successo");
 			insertLog("Ordine_Effettuato");
@@ -2583,11 +2594,12 @@ function hideMenuForUser()
 	$("#dashboard").hide();
 }
 
+//ANALYTIC
 function insertAnalytic(Page)
 {
 	$.get("/" + folderProject + "/servlet/SaveAnalytic?Pagina="+ Page , function(data) {
 		
-		if(data == "Ok")
+		if(data == Error.COMPLETED)
 		{
 			
 		}
@@ -3391,7 +3403,7 @@ function hideReviewLocal()
 	{
 		$.get("/" + folderProject + "/servlet/ReviewLocalByLocalUser" , function(data) {
 			
-			if(data != "null")
+			if(data != Error.NOT_FOUNDED && data != Error.BLANK_SESSION)
 				$('#ReviewDIV').text("");
 	
 		});

@@ -1,7 +1,9 @@
 package database;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -31,7 +33,8 @@ public class ReviewRestaurantDao implements ReviewRestaurantDAOInterface {
     public EntityManager openCurrentSessionwithTransaction() {
 		current_entityManager = getEntityManager();
 		current_transaction = current_entityManager.getTransaction();
-		
+		current_transaction.begin();
+
         return current_entityManager;
     }
      
@@ -90,9 +93,9 @@ public class ReviewRestaurantDao implements ReviewRestaurantDAOInterface {
 		return review_restaurant;
 	}
     @SuppressWarnings("unchecked")
-	public List<ReviewRestaurant> findAll()
+	public Set<ReviewRestaurant> findAll()
 	{
-		List<ReviewRestaurant> review_restaurants = (List<ReviewRestaurant>) getCurrentSession().createQuery("from model.ReviewRestaurant", ReviewRestaurant.class).getResultList();
+    	Set<ReviewRestaurant> review_restaurants = new HashSet<ReviewRestaurant>( getCurrentSession().createQuery("from model.ReviewRestaurant", ReviewRestaurant.class).getResultList());
 
 		return review_restaurants;
 		

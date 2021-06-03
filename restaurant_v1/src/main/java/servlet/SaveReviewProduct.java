@@ -17,20 +17,19 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import database.DBConnection;
-import database.OrderDaoJDBC;
-import database.ProductDaoJDBC;
-import database.ReviewProductDaoJDBC;
-import database.UserDaoJDBC;
+
 import model.Analytic;
-import model.Cart;
-import model.Email;
+import model.Error;
 import model.Order;
 import model.Product;
 import model.Restaurant;
 import model.ReviewProduct;
 import model.State;
 import model.User;
+import service.ProductService;
+import service.ReviewProductService;
+import service.UserService;
+import model.Error;
 
 
 
@@ -47,35 +46,34 @@ public class SaveReviewProduct extends HttpServlet{
 				resp.setContentType("text/plain");
 				resp.setCharacterEncoding("UTF-8");
 				
-				DBConnection dbConnection = new DBConnection(); 
-				ReviewProductDaoJDBC RevProductDao = new ReviewProductDaoJDBC(dbConnection);
+				ReviewProductService review_product_service = new ReviewProductService();
+				ProductService product_service = new ProductService();
+				UserService user_service = new UserService();
 				
-				User user = null;
-				ReviewProduct rev;
 				HttpSession session = req.getSession(false);
 				if(session != null)
 				{
-					user = (User)session.getAttribute("UserLogged");
+					User user = (User)session.getAttribute("UserLogged");
 					
-					rev = new ReviewProduct();
-					rev.setIdProduct(idProdotto);
-					rev.setNumeroTelefono(user.getNumeroTelefono());
-					rev.setVoto(Voto);
+					ReviewProduct rev = new ReviewProduct();
+					rev.setProduct(product_service.findById(idProdotto));
+					rev.setUser(user_service.findById(user.getTelephone()));
+					rev.setVote(Voto);
 					
 					Date currentTime = Calendar.getInstance().getTime();
-					rev.setDataOra(currentTime);
+					rev.setDate_time(currentTime);
 					
-					RevProductDao.save(rev);
+					review_product_service.persist(rev);
 					
 					
-					resp.getWriter().write("Ok");
+					resp.getWriter().write(Error.COMPLETED.toString());
 				}
 				
 					
 				String Message = "Recensione al prodotto inviata correttamente";
 					
-				Email mail = new Email();
-				mail.Send(user.getMail(), "Recensione Inviata!", Message);
+				//Email mail = new Email();
+				//mail.Send(user.getMail(), "Recensione Inviata!", Message);
 					
 			
 				

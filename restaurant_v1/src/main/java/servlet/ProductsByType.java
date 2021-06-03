@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -48,7 +49,7 @@ public class ProductsByType extends HttpServlet{
 					
 					if(Rest != null)
 					{
-						List<Product> products = restaurant_session.getListProducts();
+						Set<Product> products = restaurant_session.getListProducts();
 						products.retainAll(type.getListProducts());
 
 						JSONArray jArray = new JSONArray();

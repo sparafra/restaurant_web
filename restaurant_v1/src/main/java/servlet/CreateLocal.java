@@ -14,8 +14,10 @@ import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
@@ -38,18 +40,14 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import database.DBConnection;
-import database.IngredientDaoJDBC;
-import database.ProductDaoJDBC;
-import database.RestaurantDaoJDBC;
-import database.UserDaoJDBC;
-import model.Cart;
-import model.Email;
+
 import model.Ingredient;
 import model.Product;
 import model.Restaurant;
 import model.User;
-import database.IdBroker;
+import service.RestaurantService;
+import service.UserService;
+import utils.PasswordUtil;
 
 @MultipartConfig
 
@@ -67,9 +65,9 @@ public class CreateLocal extends HttpServlet implements ServletContextListener{
     
     	User user = new User();
     	Restaurant Rest = new Restaurant();
-		DBConnection dbConnection = new DBConnection(); 
-		RestaurantDaoJDBC RestDao = new RestaurantDaoJDBC(dbConnection);
-		UserDaoJDBC UserDao = new UserDaoJDBC(dbConnection);
+
+		RestaurantService restaurant_service = new RestaurantService();
+		UserService user_service = new UserService();
 
 		
 		String NomeUser = null;
@@ -85,9 +83,6 @@ public class CreateLocal extends HttpServlet implements ServletContextListener{
     	String CittaUser = null;
     	String CapUser = null;
     	
-		
-		
-		
     	
     	String NomeLocale = null;
     	String MailLocale = null;
@@ -124,7 +119,7 @@ public class CreateLocal extends HttpServlet implements ServletContextListener{
     		CittaLocale = request.getParameter("CittaLocale");
     		CapLocale = request.getParameter("CapLocale");
     		
-    	}catch(Exception e) {}
+    	}catch(Exception e) {System.out.println(e.getMessage());}
     	
     	System.out.println(NomeUser);
     	System.out.println(CognomeUser);
@@ -151,14 +146,14 @@ public class CreateLocal extends HttpServlet implements ServletContextListener{
     	
     	
     	
-    	if(UserDao.findByMailJoin(MailUser) != null)
+    	if(user_service.findByMail(MailUser) != null)
     	{
     		System.out.println("mail presente");
-    		request.setAttribute("message", "Errore! Risulta gi� iscritto alla piattaforma un utente con questa mail");
+    		request.setAttribute("message", "Errore! Risulta già iscritto alla piattaforma un utente con questa mail");
             getServletContext().getRequestDispatcher("/Dashboard/landingpage/result.jsp").forward(
                     request, response);
     	}
-    	else if(RestDao.findByMailJoin(MailLocale) != null)
+    	else if(restaurant_service.findByMail(MailLocale) != null)
     	{
     		request.setAttribute("message", "Errore! Risulta gi� iscritto alla piattaforma un locale con questa mail");
             getServletContext().getRequestDispatcher("/Dashboard/landingpage/result.jsp").forward(
@@ -171,58 +166,39 @@ public class CreateLocal extends HttpServlet implements ServletContextListener{
     		Rest.setMail(MailLocale);
     		Rest.setName(NomeLocale);
     		Rest.setTelephone(NumeroLocale);
-    		Connection connection = dbConnection.getConnection();
-    		Long id = IdBroker.getId(connection, "idLocale", "locale");
-    		Rest.setId(id);
     		
-    		user.setAmministratore(true);
-    		user.setCognome(CognomeUser);
-    		user.setConfermato(true);
-    		user.setIndirizzo(ViaUser+", " + NCivicoUser + ", " + CittaUser + ", " + CapUser);
+    		
+    		user.setAdmin(true);
+    		user.setSurname(CognomeUser);
+    		user.setApproved(true);
+    		user.setAddress(ViaUser+", " + NCivicoUser + ", " + CittaUser + ", " + CapUser);
     		user.setMail(MailUser);
-    		user.setNome(NomeUser);
-    		user.setNumeroTelefono(NumeroUser);
-    		user.setPassword(PasswordUser);
-    		user.setIdLocale(Rest.getId());
+    		user.setName(NomeUser);
+    		user.setTelephone(NumeroUser);
+    		user.setDisabled(false);
+    		
+    		String salt = PasswordUtil.generateSalt(256).get();
+    		String hash_key = PasswordUtil.hashPassword(PasswordUser, salt).get();
+    		user.setPassword(hash_key);
+    		user.setSalt(salt);
+    		
+    		
     		
     	}
     	
-		
-		
-
-
-    	
+ 	
     	
     	// gets absolute path of the web application
         String applicationPath = request.getServletContext().getRealPath("");
         
         System.out.println(applicationPath);
-        // constructs path of the directory to save uploaded file
-        //String uploadFilePath = applicationPath + File.separator + UPLOAD_DIR;
-        
-        /*
-        HttpSession session = request.getSession(false);
-		if(session != null)
-		{
-			Rest = (Restaurant)session.getAttribute("Restaurant");
-			product.setIdLocale(Rest.getId());
-		}
-		else
-		{
-			request.setAttribute("message", "ERRORE: Non sei loggato nel sistema");
-	        getServletContext().getRequestDispatcher("/Dashboard/default/result.jsp").forward(
-	                request, response);
-		}
-        */
-        
-        
         
         String fileName = null;
         //Get all the parts from request and write it to the file on server
         
         //Checking Images are available
         for (Part part : request.getParts()) {
-        	System.out.println(part.getName());
+        	//System.out.println(part.getName());
         	if(part.getName().equals("Logo[]") || part.getName().equals("Background[]"))
         	{
         		fileName = getFileName(part);
@@ -238,7 +214,6 @@ public class CreateLocal extends HttpServlet implements ServletContextListener{
         String uploadFilePath = "assets/images/Restaurants/"+ Rest.getName()+ "/Logo/";
         String uploadFilePathBackground = "assets/images/Restaurants/"+ Rest.getName()+ "/Background/";
         // creates the save directory if it does not exists
-        //File fileSaveDir = new File(applicationPath+uploadFilePath);
         File fileSaveDir = new File(applicationPath + uploadFilePath);
         File fileSaveDirBackground = new File(applicationPath + uploadFilePathBackground);
 
@@ -258,7 +233,6 @@ public class CreateLocal extends HttpServlet implements ServletContextListener{
         		//System.out.println(part.getHeader("files[]"));
 	            fileName = getFileName(part);
 	            System.out.println(fileName);
-	            //part.write(uploadFilePath + File.separator + fileName);
 	            System.out.println(part.getSubmittedFileName());
 	            
 	            String fName = Paths.get(part.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
@@ -278,24 +252,17 @@ public class CreateLocal extends HttpServlet implements ServletContextListener{
 	         
 	            File fileDir = new File(applicationPath + uploadFilePath);
 
-	            //File fileDir = new File(applicationPath+uploadFilePath + "MainImage/");
 	            if (!fileDir.exists()) {
 	            	fileDir.mkdirs();
 	            }
 	            
-	            //File targetFile = new File(applicationPath+uploadFilePath + "/MainImage/" + Nome +".png");
 	            File targetFile = new File(applicationPath + uploadFilePath + "logo.png");
 
-	            //OutputStream outStream = new FileOutputStream(targetFile);
-	            //outStream.write(buffer);
-	            
+	
 	            ImageIO.write(ScaledImage, "png", targetFile);
 
 	            
-	            //product.setImageURL(targetFile.toURI().toURL().toString());
-	            //product.setImageURL(applicationPath+uploadFilePath + "MainImage/" + Nome +".png");
-	            Rest.setLogoURL(uploadFilePath + "logo.png");
-	            //product.setImageURL(uploadFilePath + "MainImage/" + Nome +".png");
+	            Rest.setLogo_url(uploadFilePath + "logo.png");
 
         	}
         	else if(part.getName().equals("Background[]"))
@@ -303,7 +270,6 @@ public class CreateLocal extends HttpServlet implements ServletContextListener{
         		//System.out.println(part.getHeader("files[]"));
 	            fileName = getFileName(part);
 	            System.out.println(fileName);
-	            //part.write(uploadFilePath + File.separator + fileName);
 	            System.out.println(part.getSubmittedFileName());
 	            
 	            String fName = Paths.get(part.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
@@ -323,45 +289,42 @@ public class CreateLocal extends HttpServlet implements ServletContextListener{
 	         
 	            File fileDir = new File(applicationPath + uploadFilePathBackground);
 
-	            //File fileDir = new File(applicationPath+uploadFilePath + "MainImage/");
 	            if (!fileDir.exists()) {
 	            	fileDir.mkdirs();
 	            }
 	            
-	            //File targetFile = new File(applicationPath+uploadFilePath + "/MainImage/" + Nome +".png");
 	            File targetFile = new File(applicationPath + uploadFilePathBackground + "background.png");
 
-	            //OutputStream outStream = new FileOutputStream(targetFile);
-	            //outStream.write(buffer);
-	            
+	     
 	            ImageIO.write(ScaledImage, "png", targetFile);
 
 	            
-	            //product.setImageURL(targetFile.toURI().toURL().toString());
-	            //product.setImageURL(applicationPath+uploadFilePath + "MainImage/" + Nome +".png");
-	            Rest.setBackgroundURL(uploadFilePathBackground + "background.png");
-	            //product.setImageURL(uploadFilePath + "MainImage/" + Nome +".png");
+	            Rest.setBackground_url(uploadFilePathBackground + "background.png");
         	}
         	
         }
         
         
+        System.out.println(user.getTelephone());
         
-        RestDao.save(Rest);
-        UserDao.save(user);
         
+        Set<User> setUser = new HashSet<User>();
+        setUser.add(user);
+        Rest.setListUsers(setUser);
+        restaurant_service.persist(Rest);
+
         
         //Invia mail con link di accesso alla dashboard ...Login.html?id=11
         String Message = "Registrazione effettuata con successo! \r\n" + "Mail: " + user.getMail() + "\r\n" + "Password: " + user.getPassword() +"\r\n"+ "Puoi accedere alla tua Dashboard dal seguente link localhost:8080/Restaurant/Dashboard/default/Login.html?id="+Rest.getId();
 		
-		Email mail = new Email();
-		mail.Send(user.getMail(), "Registrazione effettuata!", Message);
+		//Email mail = new Email();
+		//mail.Send(user.getMail(), "Registrazione effettuata!", Message);
         
         request.setAttribute("message", "Utente e Locale Creato Correttamente! ");
         getServletContext().getRequestDispatcher("/Dashboard/landingpage/result.jsp").forward(
                 request, response);
                
-                
+              
                 
     }
  

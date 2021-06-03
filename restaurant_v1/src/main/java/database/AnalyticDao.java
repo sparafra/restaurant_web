@@ -1,7 +1,9 @@
 package database;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -31,7 +33,8 @@ public class AnalyticDao implements AnalyticDAOInterface{
     public EntityManager openCurrentSessionwithTransaction() {
 		current_entityManager = getEntityManager();
 		current_transaction = current_entityManager.getTransaction();
-		
+		current_transaction.begin();
+
         return current_entityManager;
     }
      
@@ -90,9 +93,9 @@ public class AnalyticDao implements AnalyticDAOInterface{
 		return analytic;
 	}
     @SuppressWarnings("unchecked")
-	public List<Analytic> findAll()
+	public Set<Analytic> findAll()
 	{
-		List<Analytic> analytics = (List<Analytic>) getCurrentSession().createQuery("from model.Analytic", Analytic.class).getResultList();
+		Set<Analytic> analytics = new HashSet<Analytic>(getCurrentSession().createQuery("from model.Analytic", Analytic.class).getResultList());
 
 		return analytics;
 		

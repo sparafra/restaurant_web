@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Set;
 
 import database.AnalyticDao;
 import model.Analytic;
@@ -40,9 +41,9 @@ public class AnalyticService {
     	analyticDao.closeCurrentSessionwithTransaction();
     }
  
-    public List<Analytic> findAll() {
+    public Set<Analytic> findAll() {
     	analyticDao.openCurrentSession();
-        List<Analytic> analytics = analyticDao.findAll();
+        Set<Analytic> analytics = analyticDao.findAll();
         analyticDao.closeCurrentSession();
         return analytics;
     }

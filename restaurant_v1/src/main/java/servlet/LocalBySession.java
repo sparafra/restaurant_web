@@ -44,9 +44,11 @@ public class LocalBySession extends HttpServlet{
 						resp.getWriter().write(restaurant.getJson().toString());
 						
 					}
+					else
+						resp.getWriter().write(Error.BLANK_SESSION.toString());
 				}
-				
-				resp.getWriter().write(Error.BLANK_SESSION.toString());
+				else
+					resp.getWriter().write(Error.BLANK_SESSION.toString());
 				
 			
 		

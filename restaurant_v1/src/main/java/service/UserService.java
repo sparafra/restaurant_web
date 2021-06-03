@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Set;
 
 import database.UserDao;
 import model.User;
@@ -46,9 +47,9 @@ public class UserService {
     	userDao.closeCurrentSessionwithTransaction();
     }
  
-    public List<User> findAll() {
+    public Set<User> findAll() {
     	userDao.openCurrentSession();
-        List<User> users = userDao.findAll();
+        Set<User> users = userDao.findAll();
         userDao.closeCurrentSession();
         return users;
     }

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -49,10 +50,10 @@ public class AllOrders extends HttpServlet{
 					Restaurant restaurant_session = restaurant_service.findById(Rest.getId());
 					if(Rest != null)
 					{
-						List<Order> orders = restaurant_session.getListOrders();;
+						Set<Order> orders = restaurant_session.getListOrders();;
 						if(Stato!=null)
 						{
-							List<Order> orders_state = new ArrayList<>();
+							Set<Order> orders_state = new HashSet<Order>();
 							for(Order o: orders)
 							{
 								if(o.getState().equals(Stato))

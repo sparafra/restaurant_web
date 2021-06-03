@@ -1,7 +1,9 @@
 package database;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -28,7 +30,8 @@ public class OrderDao implements OrderDAOInterface {
     public EntityManager openCurrentSessionwithTransaction() {
 		current_entityManager = getEntityManager();
 		current_transaction = current_entityManager.getTransaction();
-		
+		current_transaction.begin();
+
         return current_entityManager;
     }
      
@@ -86,15 +89,15 @@ public class OrderDao implements OrderDAOInterface {
 		Order order =  (Order) getCurrentSession().find(Order.class, id);
 		return order;
 	}
-	public List<Order> findByState(String state)
+	public Set<Order> findByState(String state)
 	{
-		List<Order> orders = (List<Order>) getCurrentSession().createQuery("from model.Order where state = "+state, Order.class).getResultList();
+		Set<Order> orders = new HashSet<Order>( getCurrentSession().createQuery("from model.Order where state = "+state, Order.class).getResultList());
 		return orders;
 	}
     @SuppressWarnings("unchecked")
-	public List<Order> findAll()
+	public Set<Order> findAll()
 	{
-		List<Order> orders = (List<Order>) getCurrentSession().createQuery("from model.Order", Order.class).getResultList();
+		Set<Order> orders = new HashSet<Order>( getCurrentSession().createQuery("from model.Order", Order.class).getResultList());
 
 		return orders;
 		

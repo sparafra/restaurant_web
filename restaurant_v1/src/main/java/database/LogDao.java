@@ -1,7 +1,9 @@
 package database;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -28,7 +30,8 @@ public class LogDao implements LogDAOInterface {
     public EntityManager openCurrentSessionwithTransaction() {
 		current_entityManager = getEntityManager();
 		current_transaction = current_entityManager.getTransaction();
-		
+		current_transaction.begin();
+
         return current_entityManager;
     }
      
@@ -88,9 +91,9 @@ public class LogDao implements LogDAOInterface {
 		return log;
 	}
     @SuppressWarnings("unchecked")
-	public List<Log> findAll()
+	public Set<Log> findAll()
 	{
-		List<Log> logs = (List<Log>) getCurrentSession().createQuery("from model.Log", Log.class).getResultList();
+		Set<Log> logs = new HashSet<Log>( getCurrentSession().createQuery("from model.Log", Log.class).getResultList());
 
 		return logs;
 		

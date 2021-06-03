@@ -19,7 +19,6 @@ import org.json.JSONObject;
 
 import model.Error;
 
-import model.Email;
 import model.Restaurant;
 import model.ReviewRestaurant;
 import service.RestaurantService;
@@ -48,7 +47,7 @@ public class SaveReviewLocal extends HttpServlet{
 					User user = (User)session.getAttribute("UserLogged");
 					Restaurant Rest = (Restaurant)session.getAttribute("Restaurant");
 					
-					UserService user_service = UserService();
+					UserService user_service = new UserService();
 					RestaurantService restaurant_service = new RestaurantService();
 					
 					Restaurant restaurant_session = restaurant_service.findById(Rest.getId());
@@ -73,9 +72,10 @@ public class SaveReviewLocal extends HttpServlet{
 					
 					String Message = "Recensione del locale inviata correttamente";
 					
+					/*
 					Email mail = new Email();
 					mail.Send(user_session.getMail(), "Recensione Inviata!", Message);
-						
+					*/
 				}
 				
 				resp.getWriter().write(Error.BLANK_SESSION.toString());

@@ -33,6 +33,12 @@ public class RestaurantService {
     	restaurantDao.closeCurrentSession();
         return restaurant;
     }
+    public Restaurant findByMail(String mail) {
+    	restaurantDao.openCurrentSession();
+    	Restaurant restaurant = restaurantDao.findByMail(mail);
+    	restaurantDao.closeCurrentSession();
+        return restaurant;
+    }
  
     public void delete(Long id) {
     	restaurantDao.openCurrentSessionwithTransaction();

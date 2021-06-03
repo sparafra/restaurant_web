@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import org.json.JSONObject;
 
 
 import model.Restaurant;
+import model.Review;
 import model.ReviewRestaurant;
 import model.User;
 import model.Error;
@@ -53,12 +55,15 @@ public class ReviewLocalByLocalUser extends HttpServlet{
 						Restaurant restaurant_session = restaurant_service.findById(Rest.getId());
 						User user_session = user_service.findById(user.getTelephone());
 						
-						List<ReviewRestaurant> reviews = restaurant_session.getListReviewRestaurant();
+						Set<ReviewRestaurant> reviews = restaurant_session.getListReviewRestaurant();
 						reviews.retainAll(user_session.getListReviewRestaurant());
 						
-						if(reviews.size() != 0)
+						if(reviews.size() > 0)
 						{
-							resp.getWriter().write(reviews.get(0).getJson().toString());
+							for(Review R: reviews)
+							{
+								resp.getWriter().write(R.getJson().toString());
+							}
 						}
 						else
 							resp.getWriter().write(Error.NOT_FOUNDED.toString());

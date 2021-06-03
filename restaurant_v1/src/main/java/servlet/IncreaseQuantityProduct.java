@@ -15,10 +15,11 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import model.Cart;
 import model.Product;
+import model.ProductOrder;
 import service.ProductService;
 import model.Error;
+import model.Order;
 
 
 
@@ -32,7 +33,6 @@ public class IncreaseQuantityProduct extends HttpServlet{
 				ProductService product_service = new ProductService();
 				
 				Product product = product_service.findById(idProduct);
-				Cart cart = null;
 
 				resp.setContentType("text/plain");
 				resp.setCharacterEncoding("UTF-8");
@@ -40,29 +40,25 @@ public class IncreaseQuantityProduct extends HttpServlet{
 				HttpSession session = req.getSession(false);
 				if(session != null)
 				{
-					cart = (Cart)session.getAttribute("Cart");
+					Order cart = (Order)session.getAttribute("Cart");
 					
 					boolean presente=false;
-					for(int k=0; k<cart.size() && !presente; k++)
+					for(ProductOrder PO: cart.getListProductOrder())
 					{
-						if(cart.getListProducts().get(k).getId() == product.getId())
+						if(PO.getProduct().getId() == product.getId())
 						{
-							cart.getListProducts().get(k).setQuantita(cart.getListProducts().get(k).getQuantita()+1);
+							PO.setQuantity(PO.getQuantity()+1);
 							presente=true;
 						}
 					}
+					
+					
 					if(presente)
-						resp.getWriter().write("Ok");
+						resp.getWriter().write(Error.COMPLETED.toString());
 					else
-						resp.getWriter().write("Error");
+						resp.getWriter().write(Error.GENERIC_ERROR.toString());
 				}
-				
-				
-				
-				
-				
-				
-				
+		
 		
 	}
 }

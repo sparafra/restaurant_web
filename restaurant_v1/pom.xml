@@ -20,7 +20,29 @@
 	    <groupId>org.junit.jupiter</groupId>
 	    <artifactId>junit-jupiter-engine</artifactId>
 	    <version>5.7.0</version>
-	   
+	   	<scope>test</scope>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-runner -->
+	<dependency>
+	    <groupId>org.junit.platform</groupId>
+	    <artifactId>junit-platform-runner</artifactId>
+	    <version>1.7.2</version>
+	    <scope>test</scope>
+	</dependency>
+	
+		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-coyote -->
+	<dependency>
+	    <groupId>org.apache.tomcat</groupId>
+	    <artifactId>tomcat-coyote</artifactId>
+	    <version>9.0.46</version>
+	</dependency>
+	
+
+	<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-util -->
+	<dependency>
+	    <groupId>org.apache.tomcat</groupId>
+	    <artifactId>tomcat-util</artifactId>
+	    <version>9.0.46</version>
 	</dependency>
 
     

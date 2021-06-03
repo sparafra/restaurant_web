@@ -44,6 +44,29 @@ public class DecreaseQuantityProduct extends HttpServlet{
 					
 					boolean presente=false;
 					boolean removed = false;
+					
+					
+					for(ProductOrder PO: cart.getListProductOrder())
+					{
+						if(PO.getProduct().getId() == product.getId())
+						{
+							if(PO.getQuantity() == 1)
+							{
+								cart.getListProductOrder().remove(PO);
+								removed = true;
+								JSONArray jArray = new JSONArray();
+								
+								for(ProductOrder po: cart.getListProductOrder())
+									jArray.put(po.getJson());
+								resp.getWriter().write(jArray.toString());
+
+							}
+							else
+								PO.setQuantity(PO.getQuantity()-1);
+							presente=true;
+						}
+					}
+					/*
 					for(int k=0; k<cart.getListProductOrder().size() && !presente; k++)
 					{
 						if(cart.getListProductOrder().get(k).getProduct().getId() == product.getId())
@@ -58,44 +81,22 @@ public class DecreaseQuantityProduct extends HttpServlet{
 									jArray.put(po.getJson());
 								resp.getWriter().write(jArray.toString());
 
-								/*
-								for(int i=0; i<cart.getListProductOrder().size(); i++)
-								{
-									JSONObject obj = new JSONObject();
-									try
-									{
-										obj.put("id", cart.getListProducts().get(i).getId());
-										obj.put("Name", cart.getListProducts().get(i).getNome());
-										obj.put("Price", cart.getListProducts().get(i).getPrezzo());
-										obj.put("Type", cart.getListProducts().get(i).getTipo());
-										obj.put("ImageURL", cart.getListProducts().get(i).getImageURL());
-										obj.put("Quantity", cart.getListProducts().get(i).getQuantita());
-										jArray.put(obj);
-									}catch(Exception e) {e.printStackTrace();}
-								}
-								*/
 							}
 							else
 								cart.getListProductOrder().get(k).setQuantity(cart.getListProductOrder().get(k).getQuantity()-1);
 							presente=true;
 						}
 					}
+					*/
 					if(presente && !removed )
 						resp.getWriter().write(Error.COMPLETED.toString());
 					else if(!removed || !presente)
 						resp.getWriter().write(Error.GENERIC_ERROR.toString());
 					else if(removed)
 						resp.getWriter().write(Error.COMPLETED.toString());
-
 						
 				}
 				
-				
-				
-				
-				
-				
-				
-		
+
 	}
 }

@@ -31,10 +31,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import database.DBConnection;
-import database.RestaurantDaoJDBC;
-import database.UserDaoJDBC;
-import model.Cart;
+
 import model.Restaurant;
 import model.User;
 

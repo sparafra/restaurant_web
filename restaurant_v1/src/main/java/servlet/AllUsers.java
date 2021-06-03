@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -47,7 +48,7 @@ public class AllUsers extends HttpServlet{
 						Restaurant restaurant_session = restaurant_service.findById(Rest.getId());
 						User user_session = user_service.findById(user.getTelephone());
 						
-						List<User> users = restaurant_session.getListUsers();
+						Set<User> users = restaurant_session.getListUsers();
 						
 						JSONArray jArray = new JSONArray();
 						

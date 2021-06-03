@@ -1,7 +1,9 @@
 package database;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -31,7 +33,8 @@ public class NoticeDao implements NoticeDAOInterface {
     public EntityManager openCurrentSessionwithTransaction() {
 		current_entityManager = getEntityManager();
 		current_transaction = current_entityManager.getTransaction();
-		
+		current_transaction.begin();
+
         return current_entityManager;
     }
      
@@ -90,9 +93,9 @@ public class NoticeDao implements NoticeDAOInterface {
 		return notice;
 	}
     @SuppressWarnings("unchecked")
-	public List<Notice> findAll()
+	public Set<Notice> findAll()
 	{
-		List<Notice> notices = (List<Notice>) getCurrentSession().createQuery("from model.Notice", Notice.class).getResultList();
+		Set<Notice> notices = new HashSet<Notice>( getCurrentSession().createQuery("from model.Notice", Notice.class).getResultList());
 
 		return notices;
 		

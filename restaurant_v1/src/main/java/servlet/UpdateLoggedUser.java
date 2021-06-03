@@ -17,12 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import database.DBConnection;
-import database.OrderDaoJDBC;
-import database.ProductDaoJDBC;
-import database.UserDaoJDBC;
-import model.Cart;
-import model.Email;
+//import model.Email;
 import model.Order;
 import model.Product;
 
@@ -75,8 +70,8 @@ public class UpdateLoggedUser extends HttpServlet{
 
 					String Message = "Utente aggiornato con successo! \r\n" + "Mail: " + user.getMail() + "\r\n" + "Password: " + user.getPassword() +"\r\n"+ "Controlla il tuo account: http://localhost:8080/Restaurant/MyAccount.html";
 						
-					Email mail = new Email();
-					mail.Send(user.getMail(), "Utente aggiornato!", Message);
+					//Email mail = new Email();
+					//mail.Send(user.getMail(), "Utente aggiornato!", Message);
 						
 					resp.getWriter().write(Error.COMPLETED.toString());
 				}

@@ -90,6 +90,28 @@ public class Type {
 		{
 			for(Product p: listProducts)
 			{
+				products.put(p.getJson(Class.TYPE));
+			}
+		}
+		
+		obj.put("listProducts", listProducts);
+		
+		
+		return obj;
+	}
+	public JSONObject getJson(Class c)
+	{
+		JSONObject obj = new JSONObject();
+
+		obj.put("id", id);
+		obj.put("name", name);
+		
+		JSONArray products = new JSONArray();
+		
+		if(listProducts != null && c == Class.PRODUCT)
+		{
+			for(Product p: listProducts)
+			{
 				products.put(p.getJson());
 			}
 		}

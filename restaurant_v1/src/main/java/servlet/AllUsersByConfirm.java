@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -52,7 +53,7 @@ public class AllUsersByConfirm extends HttpServlet{
 						UserService user_service = new UserService();
 						User user_session = new User();
 						
-						List<User> users = restaurant_session.getListUsers();
+						Set<User> users = restaurant_session.getListUsers();
 						
 						JSONArray jArray = new JSONArray();
 						

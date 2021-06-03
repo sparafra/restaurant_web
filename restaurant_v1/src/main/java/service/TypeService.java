@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Set;
 
 import database.TypeDao;
 import model.Type;
@@ -46,9 +47,9 @@ public class TypeService {
     	typeDao.closeCurrentSessionwithTransaction();
     }
  
-    public List<Type> findAll() {
+    public Set<Type> findAll() {
     	typeDao.openCurrentSession();
-        List<Type> types = typeDao.findAll();
+        Set<Type> types = typeDao.findAll();
         typeDao.closeCurrentSession();
         return types;
     }

@@ -71,5 +71,17 @@ public class ProductOrder {
 		
 		return obj;
 	}
+	public JSONObject getJson(Class c)
+	{
+		JSONObject obj = new JSONObject();
+
+		obj.put("id", id.getJson());
+		obj.put("product", product.getJson());
+		obj.put("order", order.getJson());
+		obj.put("quantity", quantity);
+		
+		
+		return obj;
+	}
 
 }

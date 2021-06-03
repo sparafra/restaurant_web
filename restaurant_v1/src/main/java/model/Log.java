@@ -62,5 +62,16 @@ public class Log {
 		
 		return obj;
 	}
+	public JSONObject getJson(Class c)
+	{
+		JSONObject obj = new JSONObject();
+
+		obj.put("id", id);
+		obj.put("event", event);
+		obj.put("date_time", date_time);
+		
+		
+		return obj;
+	}
 	
 }

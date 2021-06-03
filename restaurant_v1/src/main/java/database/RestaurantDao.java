@@ -2,6 +2,7 @@ package database;
 
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
@@ -10,6 +11,7 @@ import javax.persistence.Persistence;
 
 import interface_database.RestaurantDAOInterface;
 import model.Restaurant;
+import model.User;
 
 import org.hibernate.Session;
 
@@ -85,6 +87,7 @@ public class RestaurantDao implements RestaurantDAOInterface {
     
 	public Restaurant findByPrimaryKey(Long id)
 	{
+		System.out.println(id);
 		Restaurant restaurant =  (Restaurant) getCurrentSession().find(Restaurant.class, id);
 		return restaurant;
 	}
@@ -94,9 +97,19 @@ public class RestaurantDao implements RestaurantDAOInterface {
     	HashSet<Restaurant> restaurants = new HashSet<Restaurant>(getCurrentSession().createQuery("FROM model.Restaurant", Restaurant.class).getResultList());
 
 		return restaurants;
-		
 	}
-    
+    public Restaurant findByMail(String mail)
+	{
+    	List<Restaurant> list = (List<Restaurant>) getCurrentSession().createQuery("from Restaurant where mail='" + mail + "'").getResultList();
+    	if(list.size() > 0)
+    	{
+    		Restaurant restaurant =  list.get(0);
+			return restaurant;
+    	}
+    	else
+    		return null;
+	}
+
     
    
 }

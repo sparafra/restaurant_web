@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -41,17 +42,18 @@ public class addToCart extends HttpServlet{
 				if(session != null)
 				{
 					Order cart = (Order)session.getAttribute("Cart");
-					List<ProductOrder> list = cart.getListProductOrder();	
+					Set<ProductOrder> list = cart.getListProductOrder();	
 					
 					boolean presente=false;
-					for(int k=0; k<list.size() && !presente; k++)
+					for(ProductOrder PO: list)
 					{
-						if(list.get(k).getProduct().getId() == product.getId())
+						if(PO.getProduct().getId() == product.getId())
 						{
-							list.get(k).setQuantity(list.get(k).getQuantity() + 1);
+							PO.setQuantity(PO.getQuantity() + 1);
 							presente=true;
 						}
 					}
+					
 					if(!presente)
 					{
 						ProductOrder po = new ProductOrder(product, cart, 1);

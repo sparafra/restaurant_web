@@ -1,9 +1,8 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Date;
-import java.util.List;
+
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,11 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 
 import model.Analytic;
-import model.Product;
 import model.Restaurant;
 import service.RestaurantService;
 import model.Error;
@@ -29,7 +26,6 @@ public class AllAnalytic extends HttpServlet{
 			HttpServletResponse resp) throws ServletException, IOException {
 	
 				HttpSession session = req.getSession(false);
-				
 				
 				resp.setContentType("text/plain");
 				resp.setCharacterEncoding("UTF-8");
@@ -43,7 +39,7 @@ public class AllAnalytic extends HttpServlet{
 						RestaurantService restaurant_service = new RestaurantService();
 						Restaurant restaurant_session = restaurant_service.findById(Rest.getId());
 						
-						List<Analytic> analytics = restaurant_session.getListAnalytics();
+						Set<Analytic> analytics = restaurant_session.getListAnalytics();
 						
 						JSONArray jArray = new JSONArray();
 						
@@ -52,9 +48,7 @@ public class AllAnalytic extends HttpServlet{
 							jArray.put(a.getJson());
 						}
 						
-						resp.getWriter().write(jArray.toString());					
-						
-			
+						resp.getWriter().write(jArray.toString());							
 					}
 					else
 					{
@@ -62,7 +56,5 @@ public class AllAnalytic extends HttpServlet{
 					}
 				}
 				resp.getWriter().write(Error.BLANK_SESSION.toString());	
-
-							
 	}
 }

@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Set;
 
 import database.NoticeDao;
 import model.Notice;
@@ -40,9 +41,9 @@ public class NoticeService {
     	noticeDao.closeCurrentSessionwithTransaction();
     }
  
-    public List<Notice> findAll() {
+    public Set<Notice> findAll() {
     	noticeDao.openCurrentSession();
-        List<Notice> notices = noticeDao.findAll();
+        Set<Notice> notices = noticeDao.findAll();
         noticeDao.closeCurrentSession();
         return notices;
     }

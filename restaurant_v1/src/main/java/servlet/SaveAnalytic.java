@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -44,28 +45,30 @@ public class SaveAnalytic extends HttpServlet{
 				HttpSession session = req.getSession(false);
 				if(session != null)
 				{
-					User user = (User)session.getAttribute("UserLogged");
+					//User user = (User)session.getAttribute("UserLogged");
 					Restaurant Rest = (Restaurant)session.getAttribute("Restaurant");
 					
 					RestaurantService restaurant_service = new RestaurantService();
 					
+					System.out.println("ANALYTIC:"+Rest.getId());
 					Restaurant restaurant_logged = restaurant_service.findById(Rest.getId());
 					
-					
+				
 					Analytic analytic = new Analytic();
 					
 					analytic.setPage(Pagina);
 					Date currentTime = Calendar.getInstance().getTime();
 					analytic.setDate_time(currentTime);
 					
+					if(restaurant_logged.getListAnalytics() == null)
+						restaurant_logged.setListAnalytics(new HashSet<Analytic>());
 					restaurant_logged.getListAnalytics().add(analytic);
 					restaurant_service.update(restaurant_logged);
 					
 					resp.getWriter().write(Error.COMPLETED.toString());
 				}
-								
-			
-				resp.getWriter().write(Error.GENERIC_ERROR.toString());
+				else
+					resp.getWriter().write(Error.BLANK_SESSION.toString());
 			
 		
 	}

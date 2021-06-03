@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -47,7 +48,7 @@ public class OrdersByState extends HttpServlet{
 					{
 						RestaurantService restaurant_service = new RestaurantService();
 						Restaurant restaurant_session = restaurant_service.findById(Rest.getId());
-						List<Order> orders = restaurant_session.getListOrders();
+						Set<Order> orders = restaurant_session.getListOrders();
 
 						
 						for(Order o: orders)

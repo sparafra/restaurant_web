@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -43,13 +45,13 @@ public class AllIngredients extends HttpServlet{
 					if(Rest != null)
 					{
 						Restaurant restaurant_session = restaurant_service.findById(Rest.getId());
-						List<Product> products = restaurant_session.getListProducts();
+						Set<Product> products = restaurant_session.getListProducts();
 						
-						List<Ingredient> ingredients = new ArrayList<>();
+						Set<Ingredient> ingredients = new HashSet<Ingredient>();
 						
 						for(Product p: products)
 						{
-							List<Ingredient> ingredient_product = p.getListIngredients();
+							Set<Ingredient> ingredient_product = p.getListIngredients();
 							ingredient_product.removeAll(ingredients);
 							ingredients.addAll(ingredient_product);
 						}

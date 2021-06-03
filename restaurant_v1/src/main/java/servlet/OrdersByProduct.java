@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,6 +20,7 @@ import org.json.JSONObject;
 
 import model.Order;
 import model.Product;
+import model.ProductOrder;
 import model.Restaurant;
 import service.ProductService;
 import service.RestaurantService;
@@ -50,17 +53,18 @@ public class OrdersByProduct extends HttpServlet{
 						
 						Product product = product_service.findById(idProdotto);
 						
-						List<Order> orders = restaurant_session.getListOrders();
-						List<Order> orders_filter = new ArrayList<>();
+						Set<Order> orders = restaurant_session.getListOrders();
+						Set<Order> orders_filter = new HashSet<Order>();
 						
 						for(Order o: orders)
 						{
 							boolean found = false;
-							for(int k=0; k<o.getListProductOrder().size() && found; k++)
+							for(ProductOrder PO: o.getListProductOrder())
 							{
-								if(o.getListProductOrder().get(k).getProduct().equals(product))
+								if(PO.getProduct().equals(product))
 									found = true;
 							}
+							
 							if(found)
 							{
 								orders_filter.add(o);

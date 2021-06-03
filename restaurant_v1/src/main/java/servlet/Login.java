@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -50,27 +51,25 @@ public class Login extends HttpServlet{
 					UserService user_service = new UserService();
 					
 					Restaurant restaurant = restaurant_service.findById(Local);
-					List<User> users = restaurant.getListUsers();
+					Set<User> users = restaurant.getListUsers();
 					
 					User user = user_service.findByMail(Mail);
 					
-					String salt = PasswordUtil.generateSalt(512).get();
+		    		System.out.println(user.getSalt());
 
 					
 					if(!users.contains(user))
 					{
 						resp.getWriter().write(Error.NOT_FOUNDED.toString());
 					}
-					else if(PasswordUtil.verifyPassword(Password, user.getPassword(), salt) && user.isApproved())
+					else if(PasswordUtil.verifyPassword(Password, user.getPassword(), user.getSalt()) && user.isApproved())
 					{
 											
 						session.setAttribute("UserLogged", user);
 						session.setAttribute("Cart", new Order());
 						session.setAttribute("Restaurant", restaurant);
-						JSONObject obj = new JSONObject();
-						obj.put("Stato", "Logged");
-	
-						resp.getWriter().write(obj.toString());
+						resp.getWriter().write(Error.COMPLETED.toString());	
+
 					}
 					else if(!user.isApproved())
 					{
@@ -97,23 +96,22 @@ public class Login extends HttpServlet{
 						if(restaurant_session != null)
 						{
 							
-							List<User> users = restaurant_session.getListUsers();
+							Set<User> users = restaurant_session.getListUsers();
 							
 							User user = user_service.findByMail(Mail);
 							if(!users.contains(user))
 							{
 								resp.getWriter().write(Error.NOT_FOUNDED.toString());
 							}
-							else if(PasswordUtil.verifyPassword(Password, user.getPassword(), salt) && user.isApproved())
+							else if(PasswordUtil.verifyPassword(Password, user.getPassword(), user.getSalt()) && user.isApproved())
 							{
 													
 								session.setAttribute("UserLogged", user);
 								session.setAttribute("Cart", new Order());
 								session.setAttribute("Restaurant", restaurant_session);
-								JSONObject obj = new JSONObject();
-								obj.put("Stato", "Logged");
+								
 			
-								resp.getWriter().write(obj.toString());
+								resp.getWriter().write(Error.LOGGED.toString());
 							}
 							else if(!user.isApproved())
 							{

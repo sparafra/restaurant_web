@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Set;
 
 import database.ReviewRestaurantDao;
 import model.ReviewRestaurant;
@@ -40,9 +41,9 @@ public class ReviewRestaurantService {
     	reviewrestaurantDao.closeCurrentSessionwithTransaction();
     }
  
-    public List<ReviewRestaurant> findAll() {
+    public Set<ReviewRestaurant> findAll() {
     	reviewrestaurantDao.openCurrentSession();
-        List<ReviewRestaurant> reviewrestaurants = reviewrestaurantDao.findAll();
+    	Set<ReviewRestaurant> reviewrestaurants = reviewrestaurantDao.findAll();
         reviewrestaurantDao.closeCurrentSession();
         return reviewrestaurants;
     }

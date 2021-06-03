@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Set;
 
 import database.IngredientDao;
 import model.Ingredient;
@@ -40,9 +41,9 @@ public class IngredientService {
         ingredientDao.closeCurrentSessionwithTransaction();
     }
  
-    public List<Ingredient> findAll() {
+    public Set<Ingredient> findAll() {
     	ingredientDao.openCurrentSession();
-        List<Ingredient> ingredients = ingredientDao.findAll();
+        Set<Ingredient> ingredients = ingredientDao.findAll();
         ingredientDao.closeCurrentSession();
         return ingredients;
     }

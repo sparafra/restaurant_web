@@ -1,7 +1,9 @@
 package database;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -32,6 +34,7 @@ public class TypeDao implements TypeDAOInterface {
     public EntityManager openCurrentSessionwithTransaction() {
 		current_entityManager = getEntityManager();
 		current_transaction = current_entityManager.getTransaction();
+		current_transaction.begin();
 		
         return current_entityManager;
     }
@@ -96,9 +99,9 @@ public class TypeDao implements TypeDAOInterface {
 		return type;
 	}
     @SuppressWarnings("unchecked")
-	public List<Type> findAll()
+	public Set<Type> findAll()
 	{
-		List<Type> types = (List<Type>) getCurrentSession().createQuery("from Type").getResultList();
+		Set<Type> types = new HashSet<Type>( getCurrentSession().createQuery("from Type").getResultList());
 
 		return types;
 		

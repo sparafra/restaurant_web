@@ -1,5 +1,5 @@
 package model;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -13,13 +13,16 @@ public class User {
 	
 	@Id
     String telephone;
-    //@Id
+   
 	String mail;
 
     String name;
     String surname;
     String address;
+    @Column(columnDefinition = "LONGTEXT")
     String password;
+    @Column(columnDefinition = "LONGTEXT")
+    String salt;
     boolean approved;
     boolean admin;
     boolean disabled;
@@ -28,28 +31,28 @@ public class User {
     @JoinTable(name = "restaurant_user", 
 	joinColumns = { @JoinColumn(name = "user_id") }, 
 	inverseJoinColumns = { @JoinColumn(name = "restaurant_id") })
-    List<Restaurant> listRestaurants;
+    Set<Restaurant> listRestaurants;
     
     @OneToMany(fetch=FetchType.EAGER, targetEntity = Order.class, cascade = {CascadeType.ALL})
     @JoinColumn(name="telephone")
-    List<Order> listOrders;
+    Set<Order> listOrders;
     
     @OneToMany(fetch=FetchType.EAGER, targetEntity = Log.class, cascade = {CascadeType.ALL})
     @JoinColumn(name="telephone")
-	List<Log> listLogs;
+    Set<Log> listLogs;
     
     @OneToMany(fetch=FetchType.EAGER, mappedBy = "restaurant", targetEntity = ReviewRestaurant.class)
-    List<ReviewRestaurant> listReviewRestaurant;
+    Set<ReviewRestaurant> listReviewRestaurant;
     
     @OneToMany(fetch=FetchType.EAGER, mappedBy = "product", targetEntity = ReviewProduct.class)
-    List<ReviewProduct> listReviewProduct;
+    Set<ReviewProduct> listReviewProduct;
 
     public User(){disabled = false; }
     
 
-    public User(String telephone, String name, String surname, String mail, String address, String password,
-			boolean approved, boolean admin, boolean disabled, List<Restaurant> listRestaurants, List<Order> listOrders,
-			List<Log> listLogs, List<ReviewRestaurant> listReviewRestaurant, List<ReviewProduct> listReviewProduct) {
+    public User(String telephone, String name, String surname, String mail, String address, String password, String salt,
+			boolean approved, boolean admin, boolean disabled, Set<Restaurant> listRestaurants, Set<Order> listOrders,
+			Set<Log> listLogs, Set<ReviewRestaurant> listReviewRestaurant, Set<ReviewProduct> listReviewProduct) {
 		super();
 		this.telephone = telephone;
 		this.name = name;
@@ -57,6 +60,7 @@ public class User {
 		this.mail = mail;
 		this.address = address;
 		this.password = password;
+		this.salt = salt;
 		this.approved = approved;
 		this.admin = admin;
 		this.disabled = disabled;
@@ -117,6 +121,14 @@ public class User {
 		this.password = password;
 	}
 
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
 	public boolean isApproved() {
 		return approved;
 	}
@@ -141,43 +153,43 @@ public class User {
 		this.disabled = disabled;
 	}
 
-	public List<Restaurant> getListRestaurants() {
+	public Set<Restaurant> getListRestaurants() {
 		return listRestaurants;
 	}
 
-	public void setListRestaurants(List<Restaurant> listRestaurants) {
+	public void setListRestaurants(Set<Restaurant> listRestaurants) {
 		this.listRestaurants = listRestaurants;
 	}
 
-	public List<Order> getListOrders() {
+	public Set<Order> getListOrders() {
 		return listOrders;
 	}
 
-	public void setListOrders(List<Order> listOrders) {
+	public void setListOrders(Set<Order> listOrders) {
 		this.listOrders = listOrders;
 	}
 
-	public List<Log> getListLogs() {
+	public Set<Log> getListLogs() {
 		return listLogs;
 	}
 
-	public void setListLogs(List<Log> listLogs) {
+	public void setListLogs(Set<Log> listLogs) {
 		this.listLogs = listLogs;
 	}
 
-	public List<ReviewRestaurant> getListReviewRestaurant() {
+	public Set<ReviewRestaurant> getListReviewRestaurant() {
 		return listReviewRestaurant;
 	}
 
-	public void setListReviewRestaurant(List<ReviewRestaurant> listReviewRestaurant) {
+	public void setListReviewRestaurant(Set<ReviewRestaurant> listReviewRestaurant) {
 		this.listReviewRestaurant = listReviewRestaurant;
 	}
 
-	public List<ReviewProduct> getListReviewProduct() {
+	public Set<ReviewProduct> getListReviewProduct() {
 		return listReviewProduct;
 	}
 
-	public void setListReviewProduct(List<ReviewProduct> listReviewProduct) {
+	public void setListReviewProduct(Set<ReviewProduct> listReviewProduct) {
 		this.listReviewProduct = listReviewProduct;
 	}
 
@@ -231,37 +243,120 @@ public class User {
 		obj.put("disabled", disabled);
 		
 		JSONArray restaurants = new JSONArray();
-		for(Restaurant r: listRestaurants)
+		if(listRestaurants != null )
 		{
-			restaurants.put(r.getJson());
+			for(Restaurant r: listRestaurants)
+			{
+				restaurants.put(r.getJson(Class.USER));
+			}
 		}
 		obj.put("listRestaurants", restaurants);
 		
 		JSONArray orders = new JSONArray();
-		for(Order o: listOrders)
+		if(listOrders != null )
 		{
-			orders.put(o.getJson());
+			for(Order o: listOrders)
+			{
+				orders.put(o.getJson(Class.USER));
+			}
 		}
 		obj.put("listOders", orders);
 		
 		JSONArray logs = new JSONArray();
-		for(Log l: listLogs)
+		if(listLogs != null )
 		{
-			logs.put(l.getJson());
+			for(Log l: listLogs)
+			{
+				logs.put(l.getJson(Class.USER));
+			}
 		}
 		obj.put("listLogs", logs);
 		
 		JSONArray reviewrestaurants = new JSONArray();
-		for(ReviewRestaurant rr: listReviewRestaurant)
+		if(listReviewRestaurant != null )
 		{
-			reviewrestaurants.put(rr.getJson());
+			for(ReviewRestaurant rr: listReviewRestaurant)
+			{
+				reviewrestaurants.put(rr.getJson(Class.USER));
+			}
 		}
 		obj.put("listReviewRestaurant", reviewrestaurants);
 		
 		JSONArray reviewproduct = new JSONArray();
-		for(ReviewProduct rp: listReviewProduct)
+		if(listReviewProduct != null)
 		{
-			reviewproduct.put(rp.getJson());
+			for(ReviewProduct rp: listReviewProduct)
+			{
+				reviewproduct.put(rp.getJson(Class.USER));
+			}
+		}
+		obj.put("listReviewProduct", reviewproduct);
+		
+		
+		return obj;
+	}
+	public JSONObject getJson(Class c)
+	{
+		
+		JSONObject obj = new JSONObject();
+
+		obj.put("telephone", telephone);
+		obj.put("mail", mail);
+		obj.put("name", name);
+		obj.put("surname", surname);
+		obj.put("address", address);
+		obj.put("password", password);
+		obj.put("approved", approved);
+		obj.put("admin", admin);
+		obj.put("disabled", disabled);
+		
+		JSONArray restaurants = new JSONArray();
+		if(listRestaurants != null && c != Class.RESTAURANT)
+		{
+			for(Restaurant r: listRestaurants)
+			{
+				restaurants.put(r.getJson());
+			}
+		}
+		obj.put("listRestaurants", restaurants);
+		
+		JSONArray orders = new JSONArray();
+		if(listOrders != null && c != Class.ORDER)
+		{
+			for(Order o: listOrders)
+			{
+				orders.put(o.getJson());
+			}
+		}
+		obj.put("listOders", orders);
+		
+		JSONArray logs = new JSONArray();
+		if(listLogs != null && c != Class.LOG)
+		{
+			for(Log l: listLogs)
+			{
+				logs.put(l.getJson());
+			}
+		}
+		obj.put("listLogs", logs);
+		
+		JSONArray reviewrestaurants = new JSONArray();
+		if(listReviewRestaurant != null && c != Class.REVIEWRESTAURANT)
+		{
+			for(ReviewRestaurant rr: listReviewRestaurant)
+			{
+				reviewrestaurants.put(rr.getJson());
+			}
+		}
+		obj.put("listReviewRestaurant", reviewrestaurants);
+		
+		JSONArray reviewproduct = new JSONArray();
+		if(listReviewProduct != null && c != Class.REVIEWPRODUCT)
+		{
+			for(ReviewProduct rp: listReviewProduct)
+			{
+				reviewproduct.put(rp.getJson());
+			}
 		}
 		obj.put("listReviewProduct", reviewproduct);
 		

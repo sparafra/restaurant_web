@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Set;
 
 import database.LogDao;
 import model.Log;
@@ -40,9 +41,9 @@ public class LogService {
     	logDao.closeCurrentSessionwithTransaction();
     }
  
-    public List<Log> findAll() {
+    public Set<Log> findAll() {
     	logDao.openCurrentSession();
-        List<Log> logs = logDao.findAll();
+        Set<Log> logs = logDao.findAll();
         logDao.closeCurrentSession();
         return logs;
     }

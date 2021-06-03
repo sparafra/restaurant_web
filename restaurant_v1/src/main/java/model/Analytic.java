@@ -65,5 +65,15 @@ public class Analytic {
 		
 		return obj;
 	}
+	public JSONObject getJson(Class c)
+	{
+		JSONObject obj = new JSONObject();
+
+		obj.put("id", id);
+		obj.put("page", page);
+		obj.put("date_time", date_time);
+		
+		return obj;
+	}
 	
 }

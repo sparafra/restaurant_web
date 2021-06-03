@@ -4,8 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Set;
 
-import org.junit.jupiter.api.*;  
-
+import org.junit.jupiter.api.*;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 import model.Restaurant;
 import service.RestaurantService;  
 
@@ -13,6 +14,7 @@ import service.RestaurantService;
 /**
  * Unit test.
  */
+@RunWith(JUnitPlatform.class)
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RestaurantTest 
@@ -152,7 +154,7 @@ public class RestaurantTest
     	for(Restaurant R: restaurants)
     		System.out.println(R.getJson());	
     	
-    	assertEquals(restaurants.size(), 2);
+    	assertNotNull(restaurants);
     }
     
     @Test
@@ -185,8 +187,9 @@ public class RestaurantTest
     }
     
     @AfterAll
-    public void clear()
+    public static void clear()
     {
+    	RestaurantService restaurant_service = new RestaurantService();
     	Set<Restaurant> restaurants = restaurant_service.findAll();
     	for(Restaurant R: restaurants)
     		restaurant_service.delete(R.getId());

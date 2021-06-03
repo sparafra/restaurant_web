@@ -136,7 +136,7 @@ public class Product {
 		{
 			for(Ingredient i: listIngredients)
 			{
-				ingredients.put(i.getJson());
+				ingredients.put(i.getJson(Class.PRODUCT));
 			}
 		}
 		
@@ -148,7 +148,7 @@ public class Product {
 		{
 			for(Type t: listTypes)
 			{
-				types.put(t.getJson());
+				types.put(t.getJson(Class.PRODUCT));
 			}
 		}
 		obj.put("listTypes", types);
@@ -156,6 +156,65 @@ public class Product {
 		JSONArray productorders = new JSONArray();
 		
 		if(listProductOrder != null)
+		{
+			for(ProductOrder po: listProductOrder)
+			{
+				productorders.put(po.getJson(Class.PRODUCT));
+			}
+		}
+		
+		obj.put("listProductOrder", productorders);
+		
+		JSONArray reviewproducts = new JSONArray();
+		
+		if(listReviewProduct != null)
+		{
+			for(ReviewProduct rp: listReviewProduct)
+			{
+				reviewproducts.put(rp.getJson(Class.PRODUCT));
+			}
+		}
+		
+		obj.put("listReviewProduct", reviewproducts);
+		
+		
+		return obj;
+	}
+	public JSONObject getJson(Class c)
+	{
+		JSONObject obj = new JSONObject();
+
+		obj.put("id", id);
+		obj.put("name", name);
+		obj.put("price", price);
+		obj.put("image_url", image_url);
+
+		JSONArray ingredients = new JSONArray();
+		
+		if(listIngredients != null && c == Class.INGREDIENT)
+		{
+			for(Ingredient i: listIngredients)
+			{
+				ingredients.put(i.getJson());
+			}
+		}
+		
+		obj.put("listIngredients", ingredients);
+		
+		JSONArray types = new JSONArray();
+		
+		if(listTypes != null && c == Class.TYPE)
+		{
+			for(Type t: listTypes)
+			{
+				types.put(t.getJson());
+			}
+		}
+		obj.put("listTypes", types);
+		
+		JSONArray productorders = new JSONArray();
+		
+		if(listProductOrder != null && c == Class.PRODUCTORDER)
 		{
 			for(ProductOrder po: listProductOrder)
 			{
@@ -167,7 +226,7 @@ public class Product {
 		
 		JSONArray reviewproducts = new JSONArray();
 		
-		if(listReviewProduct != null)
+		if(listReviewProduct != null && c == Class.REVIEWPRODUCT)
 		{
 			for(ReviewProduct rp: listReviewProduct)
 			{

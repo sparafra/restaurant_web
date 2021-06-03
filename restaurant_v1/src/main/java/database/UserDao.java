@@ -1,7 +1,10 @@
 package database;
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -31,7 +34,8 @@ public class UserDao implements UserDAOInterface {
     public EntityManager openCurrentSessionwithTransaction() {
 		current_entityManager = getEntityManager();
 		current_transaction = current_entityManager.getTransaction();
-		
+		current_transaction.begin();
+
         return current_entityManager;
     }
      
@@ -90,17 +94,23 @@ public class UserDao implements UserDAOInterface {
 		return user;
 	}
     @SuppressWarnings("unchecked")
-	public List<User> findAll()
+	public Set<User> findAll()
 	{
-		List<User> users = (List<User>) getCurrentSession().createQuery("from model.User").getResultList();
+		Set<User> users = new HashSet<User> (getCurrentSession().createQuery("from model.User").getResultList());
 
 		return users;
 		
 	}
     public User findByMail(String mail)
 	{
-		User user =  (User) getCurrentSession().createQuery("from User where mail=" + mail).getResultList().get(0);
-		return user;
+    	List<User> list = (List<User>) getCurrentSession().createQuery("from User where mail='" + mail +"'").getResultList();
+    	if(list.size() > 0)
+    	{
+    		User user =  list.get(0);
+    		return user;
+    	}
+    	else
+    		return null;
 	}
 
 }

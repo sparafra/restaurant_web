@@ -75,6 +75,28 @@ public class Ingredient {
 		{
 			for(Product p: listProducts)
 			{
+				products.put(p.getJson(Class.INGREDIENT));
+			}
+		}
+		obj.put("listProducts", listProducts);
+		
+		
+		return obj;
+	}
+	public JSONObject getJson(Class c)
+	{
+		JSONObject obj = new JSONObject();
+
+		obj.put("id", id);
+		obj.put("name", name);
+		obj.put("price", price);
+		
+		JSONArray products = new JSONArray();
+		
+		if(listProducts != null && c == Class.PRODUCT)
+		{
+			for(Product p: listProducts)
+			{
 				products.put(p.getJson());
 			}
 		}

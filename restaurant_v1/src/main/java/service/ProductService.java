@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.Set;
 
 import database.ProductDao;
 import model.Product;
@@ -40,9 +41,9 @@ public class ProductService {
     	productDao.closeCurrentSessionwithTransaction();
     }
  
-    public List<Product> findAll() {
+    public Set<Product> findAll() {
     	productDao.openCurrentSession();
-        List<Product> products = productDao.findAll();
+        Set<Product> products = productDao.findAll();
         productDao.closeCurrentSession();
         return products;
     }
