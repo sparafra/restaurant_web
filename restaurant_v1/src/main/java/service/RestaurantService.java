@@ -16,41 +16,88 @@ public class RestaurantService {
 	}
 	
 	public void persist(Restaurant entity) {
-		restaurantDao.openCurrentSessionwithTransaction();
-		restaurantDao.persist(entity);
-		restaurantDao.closeCurrentSessionwithTransaction();
+		try {
+			restaurantDao.openCurrentSessionwithTransaction();
+			restaurantDao.persist(entity);
+		}
+		finally{
+			restaurantDao.closeCurrentSessionwithTransaction();
+		}
     }
  
     public void update(Restaurant entity) {
-    	restaurantDao.openCurrentSessionwithTransaction();
-    	restaurantDao.update(entity);
-    	restaurantDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	restaurantDao.openCurrentSessionwithTransaction();
+	    	restaurantDao.update(entity);
+    	}
+    	finally{
+    		restaurantDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Restaurant findById(Long id) {
-    	restaurantDao.openCurrentSession();
-    	Restaurant restaurant = restaurantDao.findByPrimaryKey(id);
-    	restaurantDao.closeCurrentSession();
+    	
+    	Restaurant restaurant = null;
+    	try {
+    		System.out.println(id);
+	    	restaurantDao.openCurrentSession();
+	    	System.out.println("APERTA SERVICE");
+	    	restaurant = restaurantDao.findByPrimaryKey(id);
+	    	System.out.println("APERTA SERVICE: " + restaurant.getJson().toString());
+	    	if(restaurantDao == null)
+		    	System.out.println("SERVICE NULL");
+	    	else
+		    	System.out.println("SERVICE NOT NULL");
+
+
+    	}
+    	catch(Exception e)
+    	{
+    		System.out.println(e.getMessage().toString());
+    	}
+    	finally{
+    		restaurantDao.closeCurrentSession();
+	    	System.out.println("CHIUSA SERVICE");
+
+    	}
         return restaurant;
     }
+    
     public Restaurant findByMail(String mail) {
-    	restaurantDao.openCurrentSession();
-    	Restaurant restaurant = restaurantDao.findByMail(mail);
-    	restaurantDao.closeCurrentSession();
+    	
+    	Restaurant restaurant = null;
+    	try {
+	    	restaurantDao.openCurrentSession();
+	    	restaurant = restaurantDao.findByMail(mail);
+    	}
+    	finally{
+    		restaurantDao.closeCurrentSession();
+    	}
         return restaurant;
     }
  
     public void delete(Long id) {
-    	restaurantDao.openCurrentSessionwithTransaction();
-    	Restaurant restaurant = restaurantDao.findByPrimaryKey(id);
-    	restaurantDao.delete(restaurant);
-    	restaurantDao.closeCurrentSessionwithTransaction();
+    	
+    	try {
+	    	restaurantDao.openCurrentSessionwithTransaction();
+	    	Restaurant restaurant = restaurantDao.findByPrimaryKey(id);
+	    	restaurantDao.delete(restaurant);
+    	}
+    	finally{
+    		restaurantDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Set<Restaurant> findAll() {
-    	restaurantDao.openCurrentSession();
-    	Set<Restaurant> restaurants = restaurantDao.findAll();
-        restaurantDao.closeCurrentSession();
+    	
+    	Set<Restaurant> restaurants = null;
+    	try {
+	    	restaurantDao.openCurrentSession();
+	    	restaurants = restaurantDao.findAll();
+    	}
+        finally{
+        	restaurantDao.closeCurrentSession();
+        }
         return restaurants;
     }
     

@@ -16,35 +16,57 @@ public class ReviewRestaurantService {
 	}
 	
 	public void persist(ReviewRestaurant entity) {
-		reviewrestaurantDao.openCurrentSessionwithTransaction();
-		reviewrestaurantDao.persist(entity);
-		reviewrestaurantDao.closeCurrentSessionwithTransaction();
+		try {
+			reviewrestaurantDao.openCurrentSessionwithTransaction();
+			reviewrestaurantDao.persist(entity);
+		}
+		finally{
+			reviewrestaurantDao.closeCurrentSessionwithTransaction();
+		}
     }
  
     public void update(ReviewRestaurant entity) {
-    	reviewrestaurantDao.openCurrentSessionwithTransaction();
-    	reviewrestaurantDao.update(entity);
-    	reviewrestaurantDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	reviewrestaurantDao.openCurrentSessionwithTransaction();
+	    	reviewrestaurantDao.update(entity);
+    	}
+    	finally{
+    		reviewrestaurantDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public ReviewRestaurant findById(Long id) {
-    	reviewrestaurantDao.openCurrentSession();
-    	ReviewRestaurant reviewrestaurant = reviewrestaurantDao.findByPrimaryKey(id);
-    	reviewrestaurantDao.closeCurrentSession();
+    	ReviewRestaurant reviewrestaurant = null;
+    	try {
+	    	reviewrestaurantDao.openCurrentSession();
+	    	reviewrestaurant = reviewrestaurantDao.findByPrimaryKey(id);
+    	}
+    	finally{
+    		reviewrestaurantDao.closeCurrentSession();
+    	}
         return reviewrestaurant;
     }
  
     public void delete(Long id) {
-    	reviewrestaurantDao.openCurrentSessionwithTransaction();
-    	ReviewRestaurant reviewrestaurant = reviewrestaurantDao.findByPrimaryKey(id);
-    	reviewrestaurantDao.delete(reviewrestaurant);
-    	reviewrestaurantDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	reviewrestaurantDao.openCurrentSessionwithTransaction();
+	    	ReviewRestaurant reviewrestaurant = reviewrestaurantDao.findByPrimaryKey(id);
+	    	reviewrestaurantDao.delete(reviewrestaurant);
+    	}
+    	finally{
+    		reviewrestaurantDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Set<ReviewRestaurant> findAll() {
-    	reviewrestaurantDao.openCurrentSession();
-    	Set<ReviewRestaurant> reviewrestaurants = reviewrestaurantDao.findAll();
-        reviewrestaurantDao.closeCurrentSession();
+    	Set<ReviewRestaurant> reviewrestaurants = null;
+    	try {
+	    	reviewrestaurantDao.openCurrentSession();
+	    	reviewrestaurants = reviewrestaurantDao.findAll();
+    	}
+    	finally{
+    		reviewrestaurantDao.closeCurrentSession();
+    	}
         return reviewrestaurants;
     }
  

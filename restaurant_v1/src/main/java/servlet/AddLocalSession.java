@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.HashSet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpSession;
 
 import model.Restaurant;
 import model.Error;
+import model.Order;
+import model.ProductOrder;
 import service.RestaurantService;
 
 
@@ -34,14 +37,16 @@ public class AddLocalSession extends HttpServlet{
 				}
 				else
 				{
+					HashSet<ProductOrder> set = new HashSet<ProductOrder>();
+					Order order = new Order();
+					order.setListProductOrder(set);
+					
 					HttpSession session = req.getSession(true);
 					session.setAttribute("Restaurant", restaurant);
-
+					session.setAttribute("Cart", order);
+					session.setAttribute("UserLogged", null);
+					
 					resp.getWriter().write(Error.COMPLETED.toString());
 				}
-				
-				
-			
-		
 	}
 }

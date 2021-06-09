@@ -16,35 +16,57 @@ public class AnalyticService {
 	}
 	
 	public void persist(Analytic entity) {
-		analyticDao.openCurrentSessionwithTransaction();
-		analyticDao.persist(entity);
-		analyticDao.closeCurrentSessionwithTransaction();
+		try {
+			analyticDao.openCurrentSessionwithTransaction();
+			analyticDao.persist(entity);
+		}
+		finally {
+			analyticDao.closeCurrentSessionwithTransaction();
+		}
     }
  
     public void update(Analytic entity) {
-    	analyticDao.openCurrentSessionwithTransaction();
-    	analyticDao.update(entity);
-    	analyticDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	analyticDao.openCurrentSessionwithTransaction();
+	    	analyticDao.update(entity);
+    	}
+    	finally{
+    		analyticDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Analytic findById(Long id) {
-    	analyticDao.openCurrentSession();
-    	Analytic analytic = analyticDao.findByPrimaryKey(id);
-    	analyticDao.closeCurrentSession();
+    	Analytic analytic = null;
+    	try {
+	    	analyticDao.openCurrentSession();
+	    	analytic = analyticDao.findByPrimaryKey(id);
+    	}
+    	finally{
+    		analyticDao.closeCurrentSession();
+    	}
         return analytic;
     }
  
     public void delete(Long id) {
-    	analyticDao.openCurrentSessionwithTransaction();
-    	Analytic analytic = analyticDao.findByPrimaryKey(id);
-    	analyticDao.delete(analytic);
-    	analyticDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	analyticDao.openCurrentSessionwithTransaction();
+	    	Analytic analytic = analyticDao.findByPrimaryKey(id);
+	    	analyticDao.delete(analytic);
+    	}
+    	finally{
+    		analyticDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Set<Analytic> findAll() {
-    	analyticDao.openCurrentSession();
-        Set<Analytic> analytics = analyticDao.findAll();
-        analyticDao.closeCurrentSession();
+    	Set<Analytic> analytics = null;
+    	try {
+	    	analyticDao.openCurrentSession();
+	        analytics = analyticDao.findAll();
+    	}
+        finally{
+        	analyticDao.closeCurrentSession();
+        }
         return analytics;
     }
  

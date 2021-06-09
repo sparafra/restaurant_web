@@ -16,35 +16,57 @@ public class ReviewProductService {
 	}
 	
 	public void persist(ReviewProduct entity) {
-		reviewproductDao.openCurrentSessionwithTransaction();
-		reviewproductDao.persist(entity);
-		reviewproductDao.closeCurrentSessionwithTransaction();
+		try {
+			reviewproductDao.openCurrentSessionwithTransaction();
+			reviewproductDao.persist(entity);
+		}
+		finally{
+			reviewproductDao.closeCurrentSessionwithTransaction();
+		}
     }
  
     public void update(ReviewProduct entity) {
-    	reviewproductDao.openCurrentSessionwithTransaction();
-    	reviewproductDao.update(entity);
-    	reviewproductDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	reviewproductDao.openCurrentSessionwithTransaction();
+	    	reviewproductDao.update(entity);
+    	}
+    	finally{
+    		reviewproductDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public ReviewProduct findById(Long id) {
-    	reviewproductDao.openCurrentSession();
-    	ReviewProduct reviewproduct = reviewproductDao.findByPrimaryKey(id);
-    	reviewproductDao.closeCurrentSession();
+    	ReviewProduct reviewproduct = null;
+    	try {
+	    	reviewproductDao.openCurrentSession();
+	    	reviewproduct = reviewproductDao.findByPrimaryKey(id);
+    	}
+    	finally{
+    		reviewproductDao.closeCurrentSession();
+    	}
         return reviewproduct;
     }
  
     public void delete(Long id) {
-    	reviewproductDao.openCurrentSessionwithTransaction();
-    	ReviewProduct reviewproduct = reviewproductDao.findByPrimaryKey(id);
-    	reviewproductDao.delete(reviewproduct);
-    	reviewproductDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	reviewproductDao.openCurrentSessionwithTransaction();
+	    	ReviewProduct reviewproduct = reviewproductDao.findByPrimaryKey(id);
+	    	reviewproductDao.delete(reviewproduct);
+    	}
+    	finally{
+    		reviewproductDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Set<ReviewProduct> findAll() {
-    	reviewproductDao.openCurrentSession();
-        Set<ReviewProduct> reviewproducts = reviewproductDao.findAll();
-        reviewproductDao.closeCurrentSession();
+    	Set<ReviewProduct> reviewproducts = null;
+    	try {
+	    	reviewproductDao.openCurrentSession();
+	        reviewproducts = reviewproductDao.findAll();
+    	}
+    	finally{
+    		reviewproductDao.closeCurrentSession();
+    	}
         return reviewproducts;
     }
  

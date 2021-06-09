@@ -16,35 +16,57 @@ public class NoticeService {
 	}
 	
 	public void persist(Notice entity) {
-		noticeDao.openCurrentSessionwithTransaction();
-		noticeDao.persist(entity);
-		noticeDao.closeCurrentSessionwithTransaction();
+		try {
+			noticeDao.openCurrentSessionwithTransaction();
+			noticeDao.persist(entity);
+		}
+		finally{
+			noticeDao.closeCurrentSessionwithTransaction();
+		}
     }
  
     public void update(Notice entity) {
-    	noticeDao.openCurrentSessionwithTransaction();
-    	noticeDao.update(entity);
-    	noticeDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	noticeDao.openCurrentSessionwithTransaction();
+	    	noticeDao.update(entity);
+    	}
+    	finally{
+    		noticeDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Notice findById(Long id) {
-    	noticeDao.openCurrentSession();
-    	Notice notice = noticeDao.findByPrimaryKey(id);
-    	noticeDao.closeCurrentSession();
+    	Notice notice = null;
+    	try {
+	    	noticeDao.openCurrentSession();
+	    	notice = noticeDao.findByPrimaryKey(id);
+    	}
+    	finally{
+    		noticeDao.closeCurrentSession();
+    	}
         return notice;
     }
  
     public void delete(Long id) {
-    	noticeDao.openCurrentSessionwithTransaction();
-    	Notice notice = noticeDao.findByPrimaryKey(id);
-    	noticeDao.delete(notice);
-    	noticeDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	noticeDao.openCurrentSessionwithTransaction();
+	    	Notice notice = noticeDao.findByPrimaryKey(id);
+	    	noticeDao.delete(notice);
+    	}
+    	finally{
+    		noticeDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Set<Notice> findAll() {
-    	noticeDao.openCurrentSession();
-        Set<Notice> notices = noticeDao.findAll();
-        noticeDao.closeCurrentSession();
+    	Set<Notice> notices = null;
+    	try {
+	    	noticeDao.openCurrentSession();
+	        notices = noticeDao.findAll();
+    	}
+        finally{
+        	noticeDao.closeCurrentSession();
+        }
         return notices;
     }
  

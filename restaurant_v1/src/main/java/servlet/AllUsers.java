@@ -66,7 +66,8 @@ public class AllUsers extends HttpServlet{
 						resp.getWriter().write(Error.GENERIC_ERROR.toString());	
 					}
 				}
-				resp.getWriter().write(Error.BLANK_SESSION.toString());	
+				else
+					resp.getWriter().write(Error.BLANK_SESSION.toString());	
 
 
 	}

@@ -41,9 +41,18 @@ public class GetCart extends HttpServlet{
 
 					Order cart = (Order)session.getAttribute("Cart");
 					
-					for(ProductOrder po: cart.getListProductOrder())
-						jArray.put(po.getJson());
+					if(cart != null)
+					{
+						if(cart.getListProductOrder().size() >0)
+							for(ProductOrder po: cart.getListProductOrder())
+								jArray.put(po.getJson());
 					
+						resp.getWriter().write(jArray.toString());
+					}
+					else
+						resp.getWriter().write(Error.GENERIC_ERROR.toString());
+
+
 					/*
 					for(int k=0; k<cart.size(); k++)
 					{
@@ -60,11 +69,11 @@ public class GetCart extends HttpServlet{
 						}catch(Exception e) {e.printStackTrace();}
 					}
 					*/
-					resp.getWriter().write(Error.BLANK_SESSION.toString());
+					
 				}
 				else
 				{
-					resp.getWriter().write(Error.GENERIC_ERROR.toString());
+					resp.getWriter().write(Error.BLANK_SESSION.toString());
 				}
 				
 				

@@ -95,8 +95,11 @@ public class TypeDao implements TypeDAOInterface {
 	}
 	public Type findByName(String name)
 	{
-		Type type =  (Type) getCurrentSession().createQuery("from Type where name=" + name, Type.class).getResultList().get(0);
-		return type;
+		List<Type> types =  getCurrentSession().createQuery("from Type where name='" + name +"'", Type.class).getResultList();
+		if(types != null)
+			return types.get(0);
+		else
+			return null;
 	}
     @SuppressWarnings("unchecked")
 	public Set<Type> findAll()

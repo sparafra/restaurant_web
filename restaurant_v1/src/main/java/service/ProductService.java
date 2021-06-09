@@ -16,35 +16,57 @@ public class ProductService {
 	}
 	
 	public void persist(Product entity) {
-		productDao.openCurrentSessionwithTransaction();
-		productDao.persist(entity);
-		productDao.closeCurrentSessionwithTransaction();
+		try {
+			productDao.openCurrentSessionwithTransaction();
+			productDao.persist(entity);
+		}
+		finally{
+			productDao.closeCurrentSessionwithTransaction();
+		}
     }
  
     public void update(Product entity) {
-    	productDao.openCurrentSessionwithTransaction();
-    	productDao.update(entity);
-    	productDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	productDao.openCurrentSessionwithTransaction();
+	    	productDao.update(entity);
+    	}
+    	finally{
+    		productDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Product findById(Long id) {
-    	productDao.openCurrentSession();
-    	Product product = productDao.findByPrimaryKey(id);
-    	productDao.closeCurrentSession();
+    	Product product = null;
+    	try {
+	    	productDao.openCurrentSession();
+	    	product = productDao.findByPrimaryKey(id);
+    	}
+    	finally{
+    		productDao.closeCurrentSession();
+    	}
         return product;
     }
  
     public void delete(Long id) {
-    	productDao.openCurrentSessionwithTransaction();
-    	Product product = productDao.findByPrimaryKey(id);
-    	productDao.delete(product);
-    	productDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	productDao.openCurrentSessionwithTransaction();
+	    	Product product = productDao.findByPrimaryKey(id);
+	    	productDao.delete(product);
+    	}
+    	finally{
+    		productDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Set<Product> findAll() {
-    	productDao.openCurrentSession();
-        Set<Product> products = productDao.findAll();
-        productDao.closeCurrentSession();
+    	Set<Product> products = null;
+    	try {
+	    	productDao.openCurrentSession();
+	        products = productDao.findAll();
+    	}
+    	finally{
+    		productDao.closeCurrentSession();
+    	}
         return products;
     }
  

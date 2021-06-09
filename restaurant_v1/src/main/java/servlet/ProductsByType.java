@@ -30,8 +30,9 @@ public class ProductsByType extends HttpServlet{
 	protected void doGet(HttpServletRequest req, 
 			HttpServletResponse resp) throws ServletException, IOException {
 	
-				Long type_id = Long.valueOf(req.getParameter("Type"));
-				
+				//Long type_id = Long.valueOf(req.getParameter("Type"));
+				String type_id = req.getParameter("Type");
+
 				Restaurant Rest = null;
 				
 				resp.setContentType("text/plain");
@@ -45,7 +46,7 @@ public class ProductsByType extends HttpServlet{
 					Restaurant restaurant_session = restaurant_service.findById(Rest.getId());
 					
 					TypeService type_service = new TypeService();
-					Type type = type_service.findById(type_id);
+					Type type = type_service.findByName(type_id);
 					
 					if(Rest != null)
 					{

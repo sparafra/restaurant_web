@@ -44,34 +44,38 @@ public class ReviewLocalByLocalUser extends HttpServlet{
 				{
 					User user = (User)session.getAttribute("UserLogged");
 					Restaurant Rest = (Restaurant)session.getAttribute("Restaurant");
-					
-					RestaurantService restaurant_service = new RestaurantService();
-					UserService user_service = new UserService();
-					
-					
+
 					
 					if(Rest != null && user != null)
 					{
+						RestaurantService restaurant_service = new RestaurantService();
+						UserService user_service = new UserService();
+						
 						Restaurant restaurant_session = restaurant_service.findById(Rest.getId());
 						User user_session = user_service.findById(user.getTelephone());
 						
 						Set<ReviewRestaurant> reviews = restaurant_session.getListReviewRestaurant();
-						reviews.retainAll(user_session.getListReviewRestaurant());
-						
-						if(reviews.size() > 0)
+						if(reviews != null)
 						{
-							for(Review R: reviews)
+							reviews.retainAll(user_session.getListReviewRestaurant());
+						
+							if(reviews.size() > 0)
 							{
-								resp.getWriter().write(R.getJson().toString());
+								for(Review R: reviews)
+								{
+									resp.getWriter().write(R.getJson().toString());
+								}
 							}
+							else
+								resp.getWriter().write(Error.NOT_FOUNDED.toString());
 						}
 						else
-							resp.getWriter().write(Error.NOT_FOUNDED.toString());
+							resp.getWriter().write(Error.GENERIC_ERROR.toString());
 
-							
 					}
 				}
-				resp.getWriter().write(Error.BLANK_SESSION.toString());	
+				else
+					resp.getWriter().write(Error.BLANK_SESSION.toString());	
 		
 	}
 }

@@ -16,35 +16,57 @@ public class IngredientService {
 	}
 	
 	public void persist(Ingredient entity) {
-		ingredientDao.openCurrentSessionwithTransaction();
-		ingredientDao.persist(entity);
-		ingredientDao.closeCurrentSessionwithTransaction();
+		try {
+			ingredientDao.openCurrentSessionwithTransaction();
+			ingredientDao.persist(entity);
+		}
+		finally{
+			ingredientDao.closeCurrentSessionwithTransaction();
+		}
     }
  
     public void update(Ingredient entity) {
-    	ingredientDao.openCurrentSessionwithTransaction();
-    	ingredientDao.update(entity);
-        ingredientDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	ingredientDao.openCurrentSessionwithTransaction();
+	    	ingredientDao.update(entity);
+    	}
+    	finally{
+    		ingredientDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Ingredient findById(Long id) {
-    	ingredientDao.openCurrentSession();
-    	Ingredient ingredient = ingredientDao.findByPrimaryKey(id);
-        ingredientDao.closeCurrentSession();
+    	Ingredient ingredient = null;
+    	try {
+	    	ingredientDao.openCurrentSession();
+	    	ingredient = ingredientDao.findByPrimaryKey(id);
+    	}
+    	finally{
+    		ingredientDao.closeCurrentSession();
+    	}
         return ingredient;
     }
  
     public void delete(Long id) {
-    	ingredientDao.openCurrentSessionwithTransaction();
-    	Ingredient ingredient = ingredientDao.findByPrimaryKey(id);
-        ingredientDao.delete(ingredient);
-        ingredientDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	ingredientDao.openCurrentSessionwithTransaction();
+	    	Ingredient ingredient = ingredientDao.findByPrimaryKey(id);
+	        ingredientDao.delete(ingredient);
+    	}
+    	finally{
+    		ingredientDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Set<Ingredient> findAll() {
-    	ingredientDao.openCurrentSession();
-        Set<Ingredient> ingredients = ingredientDao.findAll();
-        ingredientDao.closeCurrentSession();
+    	Set<Ingredient> ingredients = null;
+    	try {
+	    	ingredientDao.openCurrentSession();
+	        ingredients = ingredientDao.findAll();
+    	}
+        finally{
+        	ingredientDao.closeCurrentSession();
+        }
         return ingredients;
     }
  

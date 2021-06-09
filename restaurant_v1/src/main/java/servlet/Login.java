@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,6 +24,8 @@ import service.UserService;
 import utils.PasswordUtil;
 import model.Error;
 import model.Order;
+import model.Product;
+import model.ProductOrder;
 
 
 public class Login extends HttpServlet{
@@ -42,11 +45,11 @@ public class Login extends HttpServlet{
 				resp.setContentType("text/plain");
 				resp.setCharacterEncoding("UTF-8");
 				
-				HttpSession session = req.getSession(true);
+				HttpSession session = req.getSession(false);
 
 				if(Local != null)
 				{
-					
+
 					RestaurantService restaurant_service = new RestaurantService();
 					UserService user_service = new UserService();
 					
@@ -64,9 +67,12 @@ public class Login extends HttpServlet{
 					}
 					else if(PasswordUtil.verifyPassword(Password, user.getPassword(), user.getSalt()) && user.isApproved())
 					{
-											
+						HashSet<ProductOrder> set = new HashSet<ProductOrder>();
+						Order order = new Order();
+						order.setListProductOrder(set);
+						
 						session.setAttribute("UserLogged", user);
-						session.setAttribute("Cart", new Order());
+						session.setAttribute("Cart", order);
 						session.setAttribute("Restaurant", restaurant);
 						resp.getWriter().write(Error.COMPLETED.toString());	
 
@@ -91,7 +97,6 @@ public class Login extends HttpServlet{
 
 						Restaurant restaurant_session = restaurant_service.findById(Rest.getId());
 						
-						String salt = PasswordUtil.generateSalt(512).get();
 
 						if(restaurant_session != null)
 						{
@@ -105,9 +110,12 @@ public class Login extends HttpServlet{
 							}
 							else if(PasswordUtil.verifyPassword(Password, user.getPassword(), user.getSalt()) && user.isApproved())
 							{
-													
+								HashSet<ProductOrder> set = new HashSet<ProductOrder>();
+								Order order = new Order();
+								order.setListProductOrder(set);
+								
 								session.setAttribute("UserLogged", user);
-								session.setAttribute("Cart", new Order());
+								session.setAttribute("Cart", order);
 								session.setAttribute("Restaurant", restaurant_session);
 								
 			

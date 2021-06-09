@@ -435,13 +435,11 @@ function getQueryVariable(variable) {
 
 function openLocal(id)
 {
-	//var id = $("#locals :selected").val(); // The text content of the selected option
 	$.ajax({
         url: "/" + folderProject + "/servlet/AddLocalSession?id=" + id,
         type: 'get',
         async: false,
         success: function(data) {
-        	//var obj = JSON.parse(data);
         	if(data != Error.COMPLETED)
         	{
         		alert("Error");
@@ -582,12 +580,12 @@ function loadUser()
 
     	obj = JSON.parse(data);
     	
-    	$('#Nome').val(obj.Nome);
-    	$('#Cognome').val(obj.Cognome);
-    	$('#Telefono').val(obj.NumeroTelefono);
-    	$('#Mail').val(obj.Mail);
+    	$('#Nome').val(obj.name);
+    	$('#Cognome').val(obj.surname);
+    	$('#Telefono').val(obj.telephone);
+    	$('#Mail').val(obj.mail);
     	
-    	var indirizzo = obj.Indirizzo;
+    	var indirizzo = obj.address;
     	var via = indirizzo.substring(0, indirizzo.indexOf(','));
     	indirizzo = indirizzo.substring(indirizzo.indexOf(',')+1, indirizzo.length);
     	var nCivico = indirizzo.substring(0, indirizzo.indexOf(','));
@@ -1221,7 +1219,7 @@ function loadProductSlider()
 	
 	$.get("/" + folderProject + "/servlet/AllProducts", function(data) {
 
-		if(data != Error.GENERIC_ERROR)
+		if(data != Error.BLANK_SESSION && data != Error.GENERIC_ERROR)
 		{
 
 	    	array = JSON.parse(data);
@@ -2048,7 +2046,7 @@ function isLogged()
             if(data != Error.BLANK_SESSION)
     		{
     			var obj = JSON.parse(data);
-    			$("#WelcomeMessage").text("Benvenuto " + obj.Nome + " " + obj.Cognome);
+    			$("#WelcomeMessage").text("Benvenuto " + obj.name + " " + obj.surname);
     			$("#WelcomeMessage").append("<a href='index.html' class='text-uppercase' onclick='Logout();'> Exit</a>");
     			$('#my-signin2').hide();
     			showMenuForUser();
@@ -2510,19 +2508,22 @@ function loadCartQuantity()
 {
 	return $.get("/" + folderProject + "/servlet/GetCart", function(data) {
 		
-		var array = JSON.parse(data);
-		if(array.length > 0)
+		if(data != Error.BLANK_SESSION && data != Error.GENERIC_ERROR)
 		{
-							
-		    	var cartQuantity = 0;
-		    	for (var i=0; i<array.length; i++)
-		        {
-		    		var obj = array[i];
-		    		//alert(obj.ImageURL);
-		    		cartQuantity += obj.quantity;
-		    		
-		        }
-		    	$('#cartQuantity').text(cartQuantity);
+			var array = JSON.parse(data);
+			if(array.length > 0)
+			{
+								
+					var cartQuantity = 0;
+					for (var i=0; i<array.length; i++)
+					{
+						var obj = array[i];
+						//alert(obj.ImageURL);
+						cartQuantity += obj.quantity;
+						
+					}
+					$('#cartQuantity').text(cartQuantity);
+			}
 		}
 	});
 }
@@ -2640,7 +2641,7 @@ function loadDashboardHomeInfo()
 	{
 		$.get("/" + folderProject + "/servlet/LocalInfo", function(data) {
 	        var obj = JSON.parse(data);
-	        $('#logo').attr("src", "../../"+obj.LogoURL);
+	        $('#logo').attr("src", "../../"+obj.logo_url);
 	        /*
 	        $('#NomeLocale').text(obj.Name);
 	        $('#logoFooter').attr("src", obj.LogoURL);
@@ -2654,127 +2655,136 @@ function loadDashboardHomeInfo()
 		
 		$.get("/" + folderProject + "/servlet/AllAnalytic" , function(data) {
 			
-			array = JSON.parse(data);
+			if(data != Error.GENERIC_ERROR)
+			{
+				array = JSON.parse(data);
 			
-			$('#NVisite').text(array.length);
-			
+				$('#NVisite').text(array.length);
+			}
 		});
 		
 		$.get("/" + folderProject + "/servlet/AllOrders", function(data) {
 			
-	    	array = JSON.parse(data);
-	    	
-	    	$('#NOrdini').text(array.length);
-	    	var Guadagno = 0;
-	    	for (var k=0; k<array.length; k++)
-            {
-	    		var obj = array[k];
-	    		Guadagno += obj.Costo;
-            }
-	        $('#GuadagnoTot').text("€"+Guadagno);
-	        
-	        var today = new Date();
-	        var time = today.getHours() + ":" + today.getMinutes();
-	        $('#currentTime1').text("aggiornato : " + time);
-	        $('#currentTime2').text("aggiornato : " + time);
-	    	$('#currentTime3').text("aggiornato : " + time);
-	        $('#currentTime4').text("aggiornato : " + time);
+			if(data != Error.GENERIC_ERROR)
+			{
+				array = JSON.parse(data);
+				
+				$('#NOrdini').text(array.length);
+				var Guadagno = 0;
+				for (var k=0; k<array.length; k++)
+				{
+					var obj = array[k];
+					Guadagno += obj.price;
+				}
+				$('#GuadagnoTot').text("€"+Guadagno);
+				
+				var today = new Date();
+				var time = today.getHours() + ":" + today.getMinutes();
+				$('#currentTime1').text("aggiornato : " + time);
+				$('#currentTime2').text("aggiornato : " + time);
+				$('#currentTime3').text("aggiornato : " + time);
+				$('#currentTime4').text("aggiornato : " + time);
+			}
 	    });
 		
 		$.get("/" + folderProject + "/servlet/AllUsers", function(data) {
 			
-	    	array = JSON.parse(data);
-	    	$('#NUsers').text(array.length);
-
+			if(data != Error.GENERIC_ERROR)
+			{
+	    		array = JSON.parse(data);
+	    		$('#NUsers').text(array.length);
+			}
 		});
 
 		
 		
 		$.get("/" + folderProject + "/servlet/AllProducts", function(data) {
 			
-	    	array = JSON.parse(data);
-	    	
-	    	$('#tabTopProduct1').text("");
-	    	
-	    	for (var k=0; k<array.length; k++)
-            {
-	    		var obj = array[k];
-	    		var Nome = obj.Name;
-	    		var Tipo = obj.Type;
-	    		var Costo = obj.Price;
-	    		var NVendite = 0;
-	    		
-	    		$.ajax({
-	    	        url: "/" + folderProject + "/servlet/OrdersByProduct?idProdotto="+obj.id,
-	    	        type: 'get',
-	    	        async: false,
-	    	        success: function(data_temp) {
-	    	        	
-	    	        	array_tmp = JSON.parse(data_temp);
-		    	    	NVendite = array_tmp.length;
-	    	           
-	    	        } 
-	    	     });
-	    		
-	    		
-	    		var reviewsArray = obj.Reviews;
-	    		var SVoti = 0;
-	    		for (var i=0; i<reviewsArray.length; i++)
-	            {
-	    			SVoti += reviewsArray[i].Voto;
-	            }
-	    		var mediaVoti = 0;
-	    		if(reviewsArray.length > 0)
-	    			mediaVoti = SVoti/reviewsArray.length;
-	    		//alert(mediaVoti);
-	    		
-	    	
-	    		$('#tabTopProduct1').append("<tr>"+
-                                                            "<td>" + Nome +"</td>"+
-                                                            "<td>" + Tipo +"</td>"+
-                                                            "<td>" + Costo +"</td>"+
-                                                            "<td>" + NVendite +"</td>"+
-                                                            "<td>"+
-                                                                     "<div class='stars stars-example-fontawesome-o'>"+
-                                                                            "<select id='example-fontawesome-o"+k+"' name='rating' data-current-rating='" + mediaVoti + "' autocomplete='off'>"+
-						                                                        "<option value='' label='0'></option>"+
-						                                                        "<option value='1'>1</option>"+
-						                                                        "<option value='2'>2</option>"+
-						                                                        "<option value='3'>3</option>"+
-						                                                        "<option value='4'>4</option>"+
-						                                                        "<option value='5'>5</option>"+
-						                                
-						                                                    "</select>"+
-                                                                           
-                                                                    "</div>"+
-                                                            "</td>"+
-                                                        "</tr>");
-	    	
-	    		 
-	    		$('.rating-enable').on('click',function(event) {
-		            event.preventDefault();
+			if(data != Error.GENERIC_ERROR)
+			{
+				array = JSON.parse(data);
+				
+				$('#tabTopProduct1').text("");
+				
+				for (var k=0; k<array.length; k++)
+				{
+					var obj = array[k];
+					var Nome = obj.name;
+					var Tipo = obj.type;
+					var Costo = obj.price;
+					var NVendite = 0;
+					
+					$.ajax({
+						url: "/" + folderProject + "/servlet/OrdersByProduct?idProdotto="+obj.id,
+						type: 'get',
+						async: false,
+						success: function(data_temp) {
+							
+							array_tmp = JSON.parse(data_temp);
+							NVendite = array_tmp.length;
+						
+						} 
+					});
+					
+					
+					var reviewsArray = obj.Reviews;
+					var SVoti = 0;
+					for (var i=0; i<reviewsArray.length; i++)
+					{
+						SVoti += reviewsArray[i].Voto;
+					}
+					var mediaVoti = 0;
+					if(reviewsArray.length > 0)
+						mediaVoti = SVoti/reviewsArray.length;
+					//alert(mediaVoti);
+					
+				
+					$('#tabTopProduct1').append("<tr>"+
+																"<td>" + Nome +"</td>"+
+																"<td>" + Tipo +"</td>"+
+																"<td>" + Costo +"</td>"+
+																"<td>" + NVendite +"</td>"+
+																"<td>"+
+																		"<div class='stars stars-example-fontawesome-o'>"+
+																				"<select id='example-fontawesome-o"+k+"' name='rating' data-current-rating='" + mediaVoti + "' autocomplete='off'>"+
+																					"<option value='' label='0'></option>"+
+																					"<option value='1'>1</option>"+
+																					"<option value='2'>2</option>"+
+																					"<option value='3'>3</option>"+
+																					"<option value='4'>4</option>"+
+																					"<option value='5'>5</option>"+
+															
+																				"</select>"+
+																			
+																		"</div>"+
+																"</td>"+
+															"</tr>");
+				
+					
+					$('.rating-enable').on('click',function(event) {
+						event.preventDefault();
 
-		            ratingEnable();
+						ratingEnable();
 
-		            $(this).addClass('deactivated');
-		            $('.rating-disable').removeClass('deactivated');
-		        });
+						$(this).addClass('deactivated');
+						$('.rating-disable').removeClass('deactivated');
+					});
 
-		        $('.rating-disable').on('click',function(event) {
-		            event.preventDefault();
+					$('.rating-disable').on('click',function(event) {
+						event.preventDefault();
 
-		            ratingDisable();
+						ratingDisable();
 
-		            $(this).addClass('deactivated');
-		            $('.rating-enable').removeClass('deactivated');
-		        });
+						$(this).addClass('deactivated');
+						$('.rating-enable').removeClass('deactivated');
+					});
 
-		        ratingEnable(k);
-	    		
-            }
+					ratingEnable(k);
+					
+				}
             
 	    	
-	       
+			}
 	    		
 	    });
 	        
@@ -3415,7 +3425,7 @@ function saveReviewProduct(idProduct, rating)
 	
 	$.get("/" + folderProject + "/servlet/SaveReviewProduct?idProdotto="+idProduct+"&Voto="+rating , function(data) {
 		
-		if(data != "Ok")
+		if(data != Error.COMPLETED)
 			alert("error");
 		
 	});
@@ -3427,7 +3437,7 @@ function saveReviewLocal(rating, Review)
 	
 	$.get("/" + folderProject + "/servlet/SaveReviewLocal?Voto="+rating +"&Recensione=" + Review , function(data) {
 		
-		if(data != "Ok")
+		if(data != Error.COMPLETED)
 			alert("error");
 		else
 		{

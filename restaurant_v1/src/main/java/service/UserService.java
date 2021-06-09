@@ -16,41 +16,68 @@ public class UserService {
 	}
 	
 	public void persist(User entity) {
-		userDao.openCurrentSessionwithTransaction();
-		userDao.persist(entity);
-		userDao.closeCurrentSessionwithTransaction();
+		try {
+			userDao.openCurrentSessionwithTransaction();
+			userDao.persist(entity);
+		}
+		finally{
+			userDao.closeCurrentSessionwithTransaction();
+		}
     }
  
     public void update(User entity) {
-    	userDao.openCurrentSessionwithTransaction();
-    	userDao.update(entity);
-    	userDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	userDao.openCurrentSessionwithTransaction();
+	    	userDao.update(entity);
+    	}
+    	finally{
+    		userDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public User findById(String id) {
-    	userDao.openCurrentSession();
-    	User user = userDao.findByPrimaryKey(id);
-    	userDao.closeCurrentSession();
+    	User user = null;
+    	try {
+	    	userDao.openCurrentSession();
+	    	user = userDao.findByPrimaryKey(id);
+    	}
+    	finally{
+    		userDao.closeCurrentSession();
+    	}
         return user;
     }
     public User findByMail(String mail) {
+    	User user = null;
+    	try {
     	userDao.openCurrentSession();
-    	User user = userDao.findByMail(mail);
-    	userDao.closeCurrentSession();
+    	user = userDao.findByMail(mail);
+    	}
+    	finally{
+    		userDao.closeCurrentSession();
+    	}
         return user;
     }
  
     public void delete(String id) {
-    	userDao.openCurrentSessionwithTransaction();
-    	User user = userDao.findByPrimaryKey(id);
-    	userDao.delete(user);
-    	userDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	userDao.openCurrentSessionwithTransaction();
+	    	User user = userDao.findByPrimaryKey(id);
+	    	userDao.delete(user);
+    	}
+    	finally{
+    		userDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Set<User> findAll() {
-    	userDao.openCurrentSession();
-        Set<User> users = userDao.findAll();
-        userDao.closeCurrentSession();
+    	Set<User> users = null;
+    	try {
+	    	userDao.openCurrentSession();
+	        users = userDao.findAll();
+    	}
+    	finally{
+    		userDao.closeCurrentSession();
+    	}
         return users;
     }
  

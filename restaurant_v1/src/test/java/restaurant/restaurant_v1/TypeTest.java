@@ -100,11 +100,13 @@ public class TypeTest
     @Order(5) 
     public void testDelete()
     {
+    	
     	for(Type T: setAdded)
     	{
     		type_service.delete(T.getId());
     		Type type_ = type_service.findById(T.getId());
         	assertNull(type_);
     	}
+    	
     }
 }

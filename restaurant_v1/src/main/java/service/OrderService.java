@@ -16,42 +16,69 @@ public class OrderService {
 	}
 	
 	public void persist(Order entity) {
-		orderDao.openCurrentSessionwithTransaction();
-		orderDao.persist(entity);
-		orderDao.closeCurrentSessionwithTransaction();
+		try {
+			orderDao.openCurrentSessionwithTransaction();
+			orderDao.persist(entity);
+		}
+		finally{
+			orderDao.closeCurrentSessionwithTransaction();
+		}
     }
  
     public void update(Order entity) {
-    	orderDao.openCurrentSessionwithTransaction();
-    	orderDao.update(entity);
-    	orderDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	orderDao.openCurrentSessionwithTransaction();
+	    	orderDao.update(entity);
+    	}
+    	finally{
+    		orderDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Order findById(Long id) {
-    	orderDao.openCurrentSession();
-    	Order order = orderDao.findByPrimaryKey(id);
-    	orderDao.closeCurrentSession();
+    	Order order = null;
+    	try {
+	    	orderDao.openCurrentSession();
+	    	order = orderDao.findByPrimaryKey(id);
+    	}
+    	finally{
+    		orderDao.closeCurrentSession();
+    	}
         return order;
     }
     
     public Set<Order> findByState(String state) {
-    	orderDao.openCurrentSession();
-    	Set<Order> orders = orderDao.findByState(state);
-    	orderDao.closeCurrentSession();
+    	Set<Order> orders = null;
+    	try {
+	    	orderDao.openCurrentSession();
+	    	orders = orderDao.findByState(state);
+    	}
+    	finally{
+    		orderDao.closeCurrentSession();
+    	}
         return orders;
     }
  
     public void delete(Long id) {
-    	orderDao.openCurrentSessionwithTransaction();
-    	Order order = orderDao.findByPrimaryKey(id);
-    	orderDao.delete(order);
-    	orderDao.closeCurrentSessionwithTransaction();
+    	try {
+	    	orderDao.openCurrentSessionwithTransaction();
+	    	Order order = orderDao.findByPrimaryKey(id);
+	    	orderDao.delete(order);
+    	}
+    	finally{
+    		orderDao.closeCurrentSessionwithTransaction();
+    	}
     }
  
     public Set<Order> findAll() {
-    	orderDao.openCurrentSession();
-    	Set<Order> orders = orderDao.findAll();
-        orderDao.closeCurrentSession();
+    	Set<Order> orders = null;
+    	try {
+	    	orderDao.openCurrentSession();
+	    	orders = orderDao.findAll();
+    	}
+        finally{
+        	orderDao.closeCurrentSession();
+        }
         return orders;
     }
  

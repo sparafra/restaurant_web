@@ -34,12 +34,7 @@ public class isLogged extends HttpServlet{
 				else
 				{
 					resp.getWriter().write(Error.BLANK_SESSION.toString());	
-				}
-				
-				
-				
-				
-				
+				}		
 		
 	}
 }
